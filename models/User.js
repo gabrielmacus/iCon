@@ -1,18 +1,57 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
+const UserService = require('../services/UserService');
+const bcrypt = require('bcrypt');
 
 var schema = new Schema({
+    facebook : {id:{type:String},picture:{type:String}},
     name: {type:String, required:true},
     surname: {type:String, required:true},
-    password: {type:String, required:true},
-    email: {type:String, required:true}
+    password: {type:String},
+    email: {type:String, required:true},
+    role: {type:String, required:true, default:"User"},
+    status:{enum: ["pending-verification","active","suspended"],default:"pending-verification",type:String}
 
 });
-schema.pre('save', true, function(next, done) {
-    // calling next kicks off the next middleware in parallel
-    next();
-    setTimeout(done, 100);
+schema.post('validate', function(doc,next) {
+
+    if(doc.password)
+    {
+        bcrypt.hash(doc.password, parseInt(process.env.APP_SALT_ROUNDS), function(err, hash) {
+            // Store hash in your password DB.
+
+            if(err)
+            {
+                //TODO: handle errors
+            }
+
+            doc.password = hash;
+            next();
+
+        });
+
+    }
+    else
+    {
+        next();
+    }
+
+
 });
+
+
+schema.post('save', function(doc,next) {
+
+
+    if (this.status == 'pending-verification') {
+        //If password is set, means that is a basic user
+        if(this.password)
+        {
+            UserService.sendConfirmationEmail(this);
+        }
+    }
+    next();
+});
+
 module.exports= mongoose.model('User',schema);

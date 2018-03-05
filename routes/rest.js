@@ -9,7 +9,7 @@ var StringService = require('../services/StringService');
 require('mongoose-pagination');
 
 //Action
-
+//TODO: handle not api request and set roles permissions list
 router.all(['/:model','/:model/:action','/:model/:action/:id'],function(req, res, next){
 
 
@@ -25,6 +25,7 @@ router.all(['/:model','/:model/:action','/:model/:action/:id'],function(req, res
 
         var Action = StringService.SnakeToCamel(req.action);
 
+
         var Service = require('../services/'+Model+'Service');
 
         Service[Action](req,res,next);
@@ -32,11 +33,16 @@ router.all(['/:model','/:model/:action','/:model/:action/:id'],function(req, res
     catch (e)
     {
 
+
         req.page = (req.query.page)?req.query.page:1;
 
         req.limit = parseInt(process.env.PAGINATION_LIMIT_DEFAULT);
 
-        mongoose.connect(process.env.DB_STRING);
+        mongoose.connect(process.env.DB_STRING).catch(function (err) {
+
+            //TODO: handle errors / handle db connection errors
+            console.error(err);
+        });
 
         next();
     }
@@ -146,7 +152,6 @@ router.post('/:model',function(req, res, next){
 
 
 });
-
 
 
 module.exports = router;
