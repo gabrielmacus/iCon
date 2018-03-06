@@ -9,8 +9,13 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var lessMiddleware = require('less-middleware');
 var dotenv = require('dotenv').config({path:path.join(__dirname,".env")});
+var passport = require('passport');
+
+//Routes
 var index = require('./routes/index');
 var rest = require('./routes/rest');
+var login = require('./routes/login');
+
 var app = express();
 
 // view engine setup
@@ -25,9 +30,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(lessMiddleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(passport.initialize());
+
+var RoleService = require('./services/RoleService');
+
 
 app.use('/', index);
 app.use('/api', rest);
+app.use('/login',login);
+
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -46,5 +59,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
 
 module.exports = app;

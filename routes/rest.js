@@ -12,6 +12,7 @@ require('mongoose-pagination');
 //TODO: handle not api request and set roles permissions list
 router.all(['/:model','/:model/:action','/:model/:action/:id'],function(req, res, next){
 
+    console.log(req.body);
 
     req.model= ModelService.LoadModel(req);
 

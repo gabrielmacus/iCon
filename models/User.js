@@ -3,17 +3,22 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const UserService = require('../services/UserService');
 const bcrypt = require('bcrypt');
+const findOrCreate = require('mongoose-findorcreate')
 
 var schema = new Schema({
     facebook : {id:{type:String},picture:{type:String}},
     name: {type:String, required:true},
     surname: {type:String, required:true},
     password: {type:String},
+    username: {type:String},
     email: {type:String, required:true},
     role: {type:String, required:true, default:"User"},
     status:{enum: ["pending-verification","active","suspended"],default:"pending-verification",type:String}
 
 });
+
+schema.plugin(findOrCreate);
+
 schema.post('validate', function(doc,next) {
 
     if(doc.password)
