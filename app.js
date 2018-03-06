@@ -32,8 +32,6 @@ app.use(lessMiddleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 
-var RoleService = require('./services/RoleService');
-
 
 app.use('/', index);
 app.use('/api', rest);

@@ -1,0 +1,54 @@
+{
+
+  "Publisher":
+  {
+    "post.*":
+    {
+      "GET":{"access_level":2},
+      "POST":{},
+      "PUT":{"access_level":1},
+      "DELETE":{"access_level":1}
+    },
+    "api.post.*":
+    {
+      "GET":{"access_level":2},
+      "POST":{},
+      "PUT":{"access_level":1},
+      "DELETE":{"access_level":1}
+    },
+    "api.*.delete-friend.*":
+    {
+      "DELETE":{"access_level":1}
+    }
+  },
+  "Api Manager":
+  {
+    "api.*":
+    {
+      "GET":{"access_level":3},
+      "POST":{},
+      "PUT":{"access_level":3},
+      "DELETE":{"access_level":3}
+
+    }
+
+  },
+  "User":
+  {
+    "api.user":
+    {
+      "GET":{"access_level":1},
+      "PUT":{"access_level":3},
+      "DELETE":{"access_level":2}
+    },
+    "api.user.find-friends.*":
+    {
+      "GET":{"access_level":2}
+    },
+    "api.user.delete-friend.*":
+    {
+      "DELETE":{"access_level":3}
+    }
+
+  }
+}

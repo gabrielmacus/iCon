@@ -1,6 +1,15 @@
 {
   "User":
   {
-    ""
+    "api.user":
+    {
+      "GET":{"access_level":1},
+      "PUT":{"access_level":1},
+      "POST":{},
+      "DELETE":{"access_level":1}
+    }
+
+
+
   }
 }
