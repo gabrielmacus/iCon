@@ -1,5 +1,6 @@
 
 var StringService = require('../services/StringService');
+var ObjectID = require('mongodb').ObjectID;
 
 module.exports={
     LoadModel:function (req) {
@@ -12,7 +13,5 @@ module.exports={
     LoadAction:function (req) {
         return (req.params.action)?req.params.action:false;
     }
-
-
 
 }
