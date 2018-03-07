@@ -4,19 +4,21 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test":"./node_modules/.bin/mocha --reporter spec "
+    "test": "./node_modules/.bin/mocha --reporter spec "
   },
   "dependencies": {
     "api-query-params": "^4.5.1",
     "app-root-dir": "^1.0.2",
     "bcrypt": "^1.0.3",
     "body-parser": "~1.18.2",
+    "chai-http": "^3.0.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "dotenv": "^5.0.1",
     "express": "~4.15.5",
     "jsonwebtoken": "^8.2.0",
     "less-middleware": "~2.2.1",
+    "mocha": "^5.0.2",
     "mongoose": "^5.0.8",
     "mongoose-findorcreate": "^3.0.0",
     "mongoose-paginate": "^5.0.3",
