@@ -1,4 +1,15 @@
 {
+  "guest":
+  {
+    "api.user.register":
+    {
+      "POST":{}
+    },
+    "api.user.token":
+    {
+      "POST":{}
+    }
+  },
   "User":
   {
     "api.user":
@@ -7,9 +18,10 @@
       "PUT":{"access_level":1},
       "POST":{},
       "DELETE":{"access_level":1}
+    },
+    "api.person":
+    {
+      "POST":{}
     }
-
-
-
   }
 }

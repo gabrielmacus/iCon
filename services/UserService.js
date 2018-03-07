@@ -19,6 +19,7 @@ module.exports={
 
         mongoose.connect(process.env.DB_STRING).catch(function (err) {
 
+
             //TODO: handle errors / handle db connection errors
             console.error(err);
         });
@@ -71,6 +72,7 @@ module.exports={
             console.error(err);
         });
 
+
         req.model.findOne({'$or':[{username:userOrEmail},{email:userOrEmail}]}).exec(function (err,result) {
 
             if(err)
@@ -82,14 +84,14 @@ module.exports={
             if(!result)
             {
                 //TODO: set errors with i18n
-                return res.json({});
+                return res.status(400).json({});
             }
 
             //If user is suspended or not verified
             if(result.status != "active")
             {
                 //TODO: set errors with i18n
-                return res.json({});
+                return res.status(403).json({});
             }
 
             bcrypt.compare(password, result.password, function(err, matches) {
@@ -103,7 +105,7 @@ module.exports={
                 if(!matches)
                 {
                     //TODO: set errors with i18n
-                    return res.json({});
+                    return res.status(400).json({});
                 }
 
                 //12 days
@@ -119,10 +121,9 @@ module.exports={
                     }
 
 
-                    if(req.rest)
-                    {
-                        return res.json({"access_token":token});
-                    }
+
+                    return res.json({"access_token":token});
+
 
 
 

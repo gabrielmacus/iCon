@@ -8,7 +8,10 @@ var mongoose = require('mongoose');
 var StringService = require('../services/StringService');
 require('mongoose-pagination');
 var RoleService = require('../services/RoleService');
+var passport = require('passport');
 
+
+//passport.authenticate(['jwt']),
 //Action
 //TODO: handle not api request and set roles permissions list
 router.all(['/:model','/:model/:action','/:model/:action/:id'],function(req, res, next){
@@ -20,11 +23,26 @@ router.all(['/:model','/:model/:action','/:model/:action/:id'],function(req, res
 
     req.rest = true;
 
-    if(!RoleService.IsAuthorized(req.user,req))
-    {
-        return res.status(401).json({"error":"Unauthorized"});
+    req.authorization = RoleService.IsAuthorized(req.user,req);
 
+    if(!req.authorization)
+    {
+
+        if(!req.user )
+        {
+            return res.status(401).json({"error":"Unauthorized"});
+
+        }
+        else
+        {
+            return res.status(403).json({"error":"Forbidden"});
+        }
     }
+
+
+
+
+
 
 
     try

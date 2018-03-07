@@ -53,8 +53,6 @@ module.exports=
                 return false;
             }
 
-
-
             for(var l in loopable)
             {
                 if(comparable.indexOf(loopable[l])== -1 && loopable[l] != "*")
@@ -72,18 +70,20 @@ module.exports=
         IsAuthorized:function (user,req,rolesPath) {
 
 
-
             try
             {
+                user = (user)?user:{role:"guest"};
+
+
                 var path = req.baseUrl+req.path;
 
                 var method = req.method.toUpperCase();
 
                 path = module.exports.ParsePath(path);
 
-                if(!roles || process.env.APP_STATUS != "development") {roles = module.exports.LoadRoles((rolesPath)?rolesPath:false);}
+                if(!roles || process.env.APP_STATUS != "production") {roles = module.exports.LoadRoles((rolesPath)?rolesPath:false);}
 
-                if(!user.role || !roles[user.role] ){ return false; }
+                if(!roles[user.role] ){ return false; }
 
                 var permission = false;
 

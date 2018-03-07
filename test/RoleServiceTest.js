@@ -53,6 +53,13 @@ describe('RoleService', function() {
         expect(RoleService.IsAuthorized(user,req,rolesPath)).to.equal(3);
 
 
+        req.method ="POST";
+        user.role='User';
+        req.path="/person";
+        expect(RoleService.IsAuthorized(user,req,rolesPath)).to.equal(1);
+
+
+
 
 
 

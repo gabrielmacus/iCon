@@ -35,6 +35,10 @@
   },
   "User":
   {
+    "api.person":
+    {
+      "POST":{}
+    },
     "api.user":
     {
       "GET":{"access_level":1},
