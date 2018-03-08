@@ -15,6 +15,7 @@ var passport = require('passport');
 var index = require('./routes/index');
 var rest = require('./routes/rest');
 var login = require('./routes/login');
+var publicRest =require('./routes/public-rest');
 
 var app = express();
 
@@ -35,6 +36,7 @@ app.use(passport.initialize());
 
 app.use('/', index);
 app.use('/api', rest);
+app.use('/api/public',publicRest);
 app.use('/login',login);
 
 

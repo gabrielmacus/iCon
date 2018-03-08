@@ -1,15 +1,5 @@
 {
-  "guest":
-  {
-    "api.user.register":
-    {
-      "POST":{}
-    },
-    "api.user.token":
-    {
-      "POST":{}
-    }
-  },
+
   "User":
   {
     "api.user":

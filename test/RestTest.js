@@ -15,7 +15,7 @@ describe('REST test', function(){
 
     it('Tries to GET user endpoint without logging in',function(done) {
         chai.request(app)
-            .get('/api/user')
+            .get('/api/user?test=true')
             .end(function(error, response) {
 
                 /*if (error) done(error);*/
@@ -28,7 +28,7 @@ describe('REST test', function(){
 
     it('Tries to POST user endpoint without logging in',function(done) {
         chai.request(app)
-            .post('/api/user')
+            .post('/api/user?test=true')
             .send({
                 name:"Gabriel",
                 surname:"Macus",
@@ -46,7 +46,7 @@ describe('REST test', function(){
     });
     it('Register an user',function(done) {
         chai.request(app)
-            .post('/api/user/register')
+            .post('/api/user/register?test=true')
             .send({
                 name:"Gabriel",
                 surname:"Macus",
@@ -67,7 +67,7 @@ describe('REST test', function(){
 
     it('Logs in with email to a non validated user',function(done) {
             chai.request(app)
-                .post('/api/user/token')
+                .post('/api/user/token?test=true')
                 .send({
                     password:"demodemo",
                     username:"gabrielmacus@gmail.com"
@@ -84,7 +84,7 @@ describe('REST test', function(){
 
     it('Logs in with email to a validated user',function(done) {
         chai.request(app)
-            .post('/api/user/token')
+            .post('/api/user/token?test=true')
             .send({
                 password:"demodemo",
                 username:"gabrielmacus2@gmail.com"
@@ -103,7 +103,7 @@ describe('REST test', function(){
     var token ="";
     it('Logs in with username to a validated user',function(done) {
         chai.request(app)
-            .post('/api/user/token')
+            .post('/api/user/token?test=true')
             .send({
                 password:"demodemo",
                 username:"gabrielmacus2"
@@ -128,7 +128,7 @@ describe('REST test', function(){
         };
         console.log(token);
         chai.request(app)
-            .post('/api/person')
+            .post('/api/person?test=true')
             .set('Authorization', 'JWT '+token)
             .send(person)
             .end(function(error, response) {

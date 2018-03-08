@@ -11,10 +11,8 @@ var RoleService = require('../services/RoleService');
 var passport = require('passport');
 
 
-//passport.authenticate(['jwt']),
 //Action
-//TODO: handle not api request and set roles permissions list
-router.all(['/:model','/:model/:action','/:model/:action/:id'],function(req, res, next){
+router.all(['/:model','/:model/:action','/:model/:action/:id'],passport.authenticate(['jwt']),function(req, res, next){
 
 
     req.model= ModelService.LoadModel(req);
@@ -28,21 +26,8 @@ router.all(['/:model','/:model/:action','/:model/:action/:id'],function(req, res
     if(!req.authorization)
     {
 
-        if(!req.user )
-        {
-            return res.status(401).json({"error":"Unauthorized"});
-
-        }
-        else
-        {
-            return res.status(403).json({"error":"Forbidden"});
-        }
+        return res.status(403).json({"error":"Forbidden"});
     }
-
-
-
-
-
 
 
     try
@@ -64,7 +49,7 @@ router.all(['/:model','/:model/:action','/:model/:action/:id'],function(req, res
 
         req.limit = parseInt(process.env.PAGINATION_LIMIT_DEFAULT);
 
-        mongoose.connect(process.env.DB_STRING).catch(function (err) {
+        mongoose.connect((req.query.test && req.app.get('env') === 'development')?process.env.DB_TEST_STRING:process.env.DB_STRING).catch(function (err) {
 
             //TODO: handle errors / handle db connection errors
             console.error(err);

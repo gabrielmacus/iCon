@@ -78,16 +78,4 @@ passport.use(new FacebookTokenStrategy({
     }
 ));
 
-router.get("/demofb", function (req,res) {
-
-    res.render('fb-demo');
-
-});
-//Demo
-router.get("/demo",  passport.authenticate('facebook-token', { session : false }),function (req,res) {
-
-    res.send("OK!");
-
-});
-
 module.exports = router;
