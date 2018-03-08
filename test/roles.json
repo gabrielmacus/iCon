@@ -37,7 +37,8 @@
   {
     "api.person":
     {
-      "POST":{}
+      "POST":{},
+      "PUT":{"access_level":1}
     },
     "api.user":
     {

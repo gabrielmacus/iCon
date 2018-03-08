@@ -2,123 +2,48 @@ const chai = require('chai');
 const expect = chai.expect;
 const chaiHttp = require('chai-http');
 const path = require('path');
-
+const User = require('../models/User');
 
 chai.use(chaiHttp);
 
 const app = require('../app.js');
+const mongoose  =require('mongoose');
 
 
 describe('REST test', function(){
 
+    var token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MjE1NTQ2ODgsImRhdGEiOnsiX2lkIjoiNWFhMDM3N2Y0ZjZhOGRiZjNlMmUzOGFjIn0sImlhdCI6MTUyMDUxNzg4OH0.ypJbudkZg3QLbK_u4AdqOncL9h-vsHIQWsErvsb7J3w";
+    before(function (done) {
+
+        mongoose.connect(process.env.DB_TEST_STRING,function () {
+
+            mongoose.connection.db.dropDatabase();
 
 
-    it('Tries to GET user endpoint without logging in',function(done) {
-        chai.request(app)
-            .get('/api/user?test=true')
-            .end(function(error, response) {
+            User.create({
+                "_id" :"5aa0377f4f6a8dbf3e2e38ac",
+                "name" : "Gabriel",
+                "surname" : "Macus",
+                "password" : "$2a$10$OifALVmTyPP2YBBUrZzlZ.l2uQcydcEx81/MLh3m67QHwrSPCiRLi",
+                "email" : "gabrielmacus2@gmail.com",
+                "username" : "gabrielmacus2",
+                "role" : "User",
+                "status" : "active",
+                "__v" : 0
+            },function (err,user) {
 
-                /*if (error) done(error);*/
-                // Now let's check our response
-                expect(response).to.have.status(401);
+
                 done();
 
             });
-    });
 
-    it('Tries to POST user endpoint without logging in',function(done) {
-        chai.request(app)
-            .post('/api/user?test=true')
-            .send({
-                name:"Gabriel",
-                surname:"Macus",
-                password:"demodemo",
-                email:"gabrielmacus@gmail.com"
-            })
-            .end(function(error, response) {
 
-                /*if (error) done(error);*/
-                // Now let's check our response
-                expect(response).to.have.status(401);
-                done();
 
-            });
-    });
-    it('Register an user',function(done) {
-        chai.request(app)
-            .post('/api/user/register?test=true')
-            .send({
-                name:"Gabriel",
-                surname:"Macus",
-                password:"demodemo",
-                email:"gabrielmacus@gmail.com",
-                username:"gabrielmacus"
-            })
-            .end(function(error, response) {
-
-                expect(response.body).to.have.property('status','pending-verification');
-              //  expect(response.body.status).to.equal('pending-verification');
-                // Now let's check our response
-                expect(response).to.have.status(200);
-                done();
-
-            });
-    });
-
-    it('Logs in with email to a non validated user',function(done) {
-            chai.request(app)
-                .post('/api/user/token?test=true')
-                .send({
-                    password:"demodemo",
-                    username:"gabrielmacus@gmail.com"
-                })
-                .end(function(error, response) {
-                    // Now let's check our response
-
-                    //expect(response.body).to.have.property('access_token');
-                    expect(response).to.have.status(403);
-                    done();
-
-                });
         });
 
-    it('Logs in with email to a validated user',function(done) {
-        chai.request(app)
-            .post('/api/user/token?test=true')
-            .send({
-                password:"demodemo",
-                username:"gabrielmacus2@gmail.com"
-            })
-            .end(function(error, response) {
+    })
 
-                // Now let's check our response
-
-                expect(response.body).to.have.property('access_token');
-                expect(response).to.have.status(200);
-                done();
-
-            });
-    });
-
-    var token ="";
-    it('Logs in with username to a validated user',function(done) {
-        chai.request(app)
-            .post('/api/user/token?test=true')
-            .send({
-                password:"demodemo",
-                username:"gabrielmacus2"
-            })
-            .end(function(error, response) {
-                // Now let's check our response
-
-                expect(response.body).to.have.property('access_token');
-                expect(response).to.have.status(200);
-                token = response.body.access_token;
-
-                done();
-
-            });
-    });
+    var idToUpdate="";
 
     it("Creates a person",function (done) {
 
@@ -126,7 +51,6 @@ describe('REST test', function(){
             name:"Juan",
             surname:"De Los Palotes"
         };
-        console.log(token);
         chai.request(app)
             .post('/api/person?test=true')
             .set('Authorization', 'JWT '+token)
@@ -134,16 +58,36 @@ describe('REST test', function(){
             .end(function(error, response) {
 
                 // Now let's check our response
-                expect(response.body).to.have.property('_id');
                 expect(response).to.have.status(200);
+                expect(response.body).to.have.property('_id');
 
+                idToUpdate = response.body._id;
                 done();
 
             });
 
-
     });
 
+
+    it("Updates a person",function (done) {
+
+        var person = {
+            name:"John"
+        };
+        chai.request(app)
+            .put('/api/person/'+idToUpdate+'?test=true')
+            .set('Authorization', 'JWT '+token)
+            .send(person)
+            .end(function(error, response) {
+
+                // Now let's check our response
+                expect(response).to.have.status(200);
+                console.log(response);
+                done();
+
+            });
+
+    });
 
 
 

@@ -14,8 +14,8 @@ var passport = require('passport');
 //Routes
 var index = require('./routes/index');
 var rest = require('./routes/rest');
-var login = require('./routes/login');
-var publicRest =require('./routes/public-rest');
+var auth = require('./routes/auth');
+
 
 var app = express();
 
@@ -34,10 +34,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 
 
+app.use(function (req,res,next) {
+  req.dbstring=(req.query && req.query.test && req.app.get('env') === 'development')?process.env.DB_TEST_STRING:process.env.DB_STRING;
+  next();
+});
 app.use('/', index);
 app.use('/api', rest);
-app.use('/api/public',publicRest);
-app.use('/login',login);
+app.use('/auth',auth);
 
 
 

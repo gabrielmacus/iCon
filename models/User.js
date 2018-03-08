@@ -15,7 +15,10 @@ var schema = new Schema({
     role: {type:String, required:true, default:"User"},
     status:{enum: ["pending-verification","active","suspended"],default:"pending-verification",type:String}
 
-});
+},
+    {
+        timestamps: true
+    });
 
 schema.plugin(findOrCreate);
 

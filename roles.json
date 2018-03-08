@@ -11,7 +11,12 @@
     },
     "api.person":
     {
-      "POST":{}
+      "POST":{},
+      "PUT":{"access_level":1}
+    },
+    "api.person.*.assignments":
+    {
+      "GET":{"access_level":1}
     }
   }
 }
