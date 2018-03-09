@@ -137,6 +137,7 @@ describe('Auth test', function(){
                 // Now let's check our response
 
                 expect(response.body).to.have.property('access_token');
+                console.log(response.body);
                 expect(response).to.have.status(200);
                 done();
 
@@ -192,7 +193,6 @@ describe('Auth test', function(){
                 expect(response.body).to.have.property('access_token');
                 expect(response).to.have.status(200);
                 token = response.body.access_token;
-
                 done();
 
             });

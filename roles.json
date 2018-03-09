@@ -9,14 +9,22 @@
       "POST":{},
       "DELETE":{"access_level":1}
     },
-    "api.person":
-    {
-      "POST":{},
-      "PUT":{"access_level":1}
-    },
     "api.person.*.assignments":
     {
       "GET":{"access_level":1}
+    },
+    "api.person.demo":
+    {
+      "POST":{}
+    },
+    "api.person.*":
+    {
+      "PUT":{"access_level":2}
+    },
+    "api.person":
+    {
+      "POST":{}
     }
+
   }
 }

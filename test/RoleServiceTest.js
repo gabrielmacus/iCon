@@ -17,6 +17,7 @@ describe('RoleService', function() {
 
 
         req.method ="DELETE";
+        req.path = "/user/12313";
         expect(RoleService.IsAuthorized(user,req,rolesPath)).to.equal(2);
 
         req.method="PUT";
@@ -59,6 +60,9 @@ describe('RoleService', function() {
         expect(RoleService.IsAuthorized(user,req,rolesPath)).to.equal(1);
 
 
+        req.method="PUT";
+        req.path="/person/123123";
+        expect(RoleService.IsAuthorized(user,req,rolesPath)).to.equal(3);
 
 
 

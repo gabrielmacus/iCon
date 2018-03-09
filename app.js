@@ -35,6 +35,7 @@ app.use(passport.initialize());
 
 
 app.use(function (req,res,next) {
+
   req.dbstring=(req.query && req.query.test && req.app.get('env') === 'development')?process.env.DB_TEST_STRING:process.env.DB_STRING;
   next();
 });

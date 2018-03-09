@@ -12,6 +12,9 @@ module.exports={
     },
     LoadAction:function (req) {
         return (req.params.action)?req.params.action:false;
+    },
+    LoadID:function (req) {
+        return (req.params.id)?req.params.id:false;
     }
 
 }

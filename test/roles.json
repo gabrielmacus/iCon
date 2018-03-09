@@ -37,14 +37,16 @@
   {
     "api.person":
     {
-      "POST":{},
-      "PUT":{"access_level":1}
+      "POST":{}
+    },
+    "api.person.*":
+    {
+
+      "PUT":{"access_level":3}
     },
     "api.user":
     {
-      "GET":{"access_level":1},
-      "PUT":{"access_level":3},
-      "DELETE":{"access_level":2}
+      "GET":{"access_level":1}
     },
     "api.user.find-friends.*":
     {
@@ -54,6 +56,12 @@
     {
       "DELETE":{"access_level":3}
     }
+  ,
+    "api.user.*":
+    {
+      "DELETE":{"access_level":2},
+      "PUT":{"access_level":3}
 
+    }
   }
 }

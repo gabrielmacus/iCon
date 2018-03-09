@@ -1,6 +1,10 @@
 var roles = false;
 var path = require('path');
 var file = require('fs');
+/**
+ * Important: should be noted that if you set, for example, 'api.user.*' key and then 'api.user.*.delete-friend', access_levels from the first one should be taken in account
+ * @type {{LoadRoles: module.exports.LoadRoles, ParsePath: module.exports.ParsePath, CompareEndpoints: module.exports.CompareEndpoints, IsAuthorized: module.exports.IsAuthorized}}
+ */
 module.exports=
     {
         LoadRoles:function (rolesPath) {

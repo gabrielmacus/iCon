@@ -2,6 +2,11 @@
 module.exports=
     {
 
+        demo:function (req,res,next) {
+
+            res.json({"demo":true});
+
+        },
         assignments:function (req,res,next) {
 
             var id = req.param.id;

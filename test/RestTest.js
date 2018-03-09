@@ -12,7 +12,7 @@ const mongoose  =require('mongoose');
 
 describe('REST test', function(){
 
-    var token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MjE1NTQ2ODgsImRhdGEiOnsiX2lkIjoiNWFhMDM3N2Y0ZjZhOGRiZjNlMmUzOGFjIn0sImlhdCI6MTUyMDUxNzg4OH0.ypJbudkZg3QLbK_u4AdqOncL9h-vsHIQWsErvsb7J3w";
+    var token ="";
     before(function (done) {
 
         mongoose.connect(process.env.DB_TEST_STRING,function () {
@@ -24,7 +24,7 @@ describe('REST test', function(){
                 "_id" :"5aa0377f4f6a8dbf3e2e38ac",
                 "name" : "Gabriel",
                 "surname" : "Macus",
-                "password" : "$2a$10$OifALVmTyPP2YBBUrZzlZ.l2uQcydcEx81/MLh3m67QHwrSPCiRLi",
+                "password" : "demodemo",
                 "email" : "gabrielmacus2@gmail.com",
                 "username" : "gabrielmacus2",
                 "role" : "User",
@@ -32,8 +32,24 @@ describe('REST test', function(){
                 "__v" : 0
             },function (err,user) {
 
+                console.log(user);
 
-                done();
+                chai.request(app)
+                    .post('/auth/token?test=true')
+                    .send({
+                        password:"demodemo",
+                        username:"gabrielmacus2"
+                    })
+                    .end(function(error, response) {
+                        // Now let's check our response
+
+                        expect(response.body).to.have.property('access_token');
+                        expect(response).to.have.status(200);
+                        token = response.body.access_token;
+                        done();
+
+                    });
+
 
             });
 
@@ -42,6 +58,9 @@ describe('REST test', function(){
         });
 
     })
+
+
+
 
     var idToUpdate="";
 
@@ -60,7 +79,6 @@ describe('REST test', function(){
                 // Now let's check our response
                 expect(response).to.have.status(200);
                 expect(response.body).to.have.property('_id');
-
                 idToUpdate = response.body._id;
                 done();
 
@@ -78,17 +96,65 @@ describe('REST test', function(){
             .put('/api/person/'+idToUpdate+'?test=true')
             .set('Authorization', 'JWT '+token)
             .send(person)
-            .end(function(error, response) {
+            .end(function(error,response) {
+
 
                 // Now let's check our response
                 expect(response).to.have.status(200);
-                console.log(response);
+                done();
+
+            });
+
+    });
+    it("GET  person assignments",function (done) {
+
+
+        chai.request(app)
+            .get('/api/person/123123/assignments?test=true')
+            .set('Authorization', 'JWT '+token)
+            .end(function(error,response) {
+
+
+                // Now let's check our response
+                expect(response).to.have.status(200);
                 done();
 
             });
 
     });
 
+    it("POST  person demo",function (done) {
 
+
+        chai.request(app)
+            .post('/api/person/demo?test=true')
+            .set('Authorization', 'JWT '+token)
+            .end(function(error,response) {
+
+
+                // Now let's check our response
+                expect(response).to.have.status(200);
+                done();
+
+            });
+
+    });
+
+    it("tries to GET  person demo",function (done) {
+
+
+        chai.request(app)
+            .get('/api/person/demo?test=true')
+            .set('Authorization', 'JWT '+token)
+            .end(function(error,response) {
+
+
+                // Now let's check our response
+                expect(response).to.have.status(403);
+                done();
+
+            });
+
+    });
 
 });

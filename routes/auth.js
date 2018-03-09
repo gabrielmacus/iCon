@@ -82,7 +82,6 @@ passport.use(new FacebookTokenStrategy({
 //Routes
 router.post('/register',function (req,res,next) {
 
-
     mongoose.connect(req.dbstring).catch(function (err) {
 
 

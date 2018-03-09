@@ -10,22 +10,24 @@ require('mongoose-pagination');
 var RoleService = require('../services/RoleService');
 var passport = require('passport');
 
-
-
-
-
 //Action
-router.all(['/:model','/:model/:action','/:model/:id/:action'],passport.authenticate(['jwt']),function(req, res, next){
+router.all(['/:model' ,'/:model/:id','/:model/:action','/:model/:id/:action'],passport.authenticate(['jwt']),function(req, res, next){
+
+    console.log("HEREEE!");
 
     req.model= ModelService.LoadModel(req);
 
     req.action = ModelService.LoadAction(req);
 
+    req.id = ModelService.LoadID(req);
+
+
     req.rest = true;
 
     req.authorization = RoleService.IsAuthorized(req.user,req);
 
-    if(!req.authorization)
+
+     if(!req.authorization)
     {
 
         return res.status(403).json({"error":"Forbidden"});
@@ -35,11 +37,13 @@ router.all(['/:model','/:model/:action','/:model/:id/:action'],passport.authenti
     try
     {
 
-        var Action = StringService.SnakeToCamel(req.action);
-
         var Route = require('../routes/'+req.model.modelName );
 
+        var Action = StringService.SnakeToCamel(req.action);
+
         Route[Action](req,res,next);
+
+
     }
     catch (e)
     {
@@ -63,15 +67,15 @@ router.all(['/:model','/:model/:action','/:model/:id/:action'],passport.authenti
 
 
 //Read one
-router.get('/:model/:action',function (req,res,next) {
+router.get('/:model/:id',function (req,res,next) {
 
 
-    if(!ObjectID.isValid(req.action))
+    if(!ObjectID.isValid(req.id))
     {
      return  next();
     }
 
-    req.model.findOne({_id:req.action}).exec(function (err,result) {
+    req.model.findOne({_id:req.id}).exec(function (err,result) {
         if(err)
         {
             //TODO: Handle errors
@@ -85,14 +89,15 @@ router.get('/:model/:action',function (req,res,next) {
 
 })
 //Update one
-router.put('/:model/:action',function (req,res,next) {
+router.put('/:model/:id',function (req,res,next) {
 
-    if(!ObjectID.isValid(req.action))
+    if(!ObjectID.isValid(req.id))
     {
         return  next();
     }
 
-    req.model.update({_id:req.action},{'$set':req.body}).exec(function (err,result) {
+
+    req.model.update({_id:req.id},{'$set':req.body}).exec(function (err,result) {
         if(err)
         {
             //TODO: Handle errors
@@ -105,14 +110,14 @@ router.put('/:model/:action',function (req,res,next) {
 
 });
 //Delete  one
-router.delete('/:model/:action',function (req,res,next) {
+router.delete('/:model/:id',function (req,res,next) {
 
-    if(!ObjectID.isValid(req.action))
+    if(!ObjectID.isValid(req.id))
     {
         return  next();
     }
 
-    req.model.findOneAndRemove({_id:req.action}).exec(function (err) {
+    req.model.findOneAndRemove({_id:req.id}).exec(function (err) {
         if(err)
         {
             //TODO: Handle errors
