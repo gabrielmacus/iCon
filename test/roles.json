@@ -23,6 +23,15 @@
   },
   "Api Manager":
   {
+    "api.streaming.$":
+    {
+      "GET":{"access_level":3},
+      "PUT":{"access_level":2}
+    },
+    "api.streaming.$.play":
+    {
+      "GET":{"access_level":1}
+    },
     "api.*":
     {
       "GET":{"access_level":3},
@@ -39,7 +48,7 @@
     {
       "POST":{}
     },
-    "api.person.*":
+    "api.person.$":
     {
 
       "PUT":{"access_level":3}
@@ -48,16 +57,16 @@
     {
       "GET":{"access_level":1}
     },
-    "api.user.find-friends.*":
+    "api.user.find-friends.$":
     {
       "GET":{"access_level":2}
     },
-    "api.user.delete-friend.*":
+    "api.user.delete-friend.$":
     {
       "DELETE":{"access_level":3}
     }
   ,
-    "api.user.*":
+    "api.user.$":
     {
       "DELETE":{"access_level":2},
       "PUT":{"access_level":3}

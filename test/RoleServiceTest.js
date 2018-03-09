@@ -41,6 +41,14 @@ describe('RoleService', function() {
         req = {method:"GET",baseUrl:"/api",path:"/user/find-friends/1234"};
         expect(RoleService.IsAuthorized(user,req,rolesPath)).to.equal(3);
 
+
+        req.path ="/streaming/1231231/play";
+        expect(RoleService.IsAuthorized(user,req,rolesPath)).to.equal(1);
+
+        req.path ="/streaming/1231231";
+        req.method ="PUT";
+        expect(RoleService.IsAuthorized(user,req,rolesPath)).to.equal(2);
+
         user = {role:'Publisher'};
         expect(RoleService.IsAuthorized(user,req,rolesPath)).to.equal(false);
 

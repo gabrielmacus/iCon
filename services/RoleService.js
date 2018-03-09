@@ -38,18 +38,39 @@ module.exports=
             var loopable = a;
             var comparable = b;
 
+            var aLast = a[a.length-1];
+            var bLast = b[b.length-1];
 
-            if((a[a.length-1] == "*") && a.length < b.length)
+
+            if((aLast == "*" ) && a.length < b.length)
             {
-                wilcardEnd = true;
+                wilcardEnd = "*";
                 loopable = a;
                 comparable = b;
             }
-            else if((b[b.length-1] == "*") && b.length < a.length)
+            else if((bLast == "*") && b.length < a.length)
             {
-                wilcardEnd = true;
+                wilcardEnd = "*";
                 loopable = b;
                 comparable = a;
+            }
+            else if((aLast == "$") && b.length == a.length)
+            {
+                loopable = a;
+                comparable = b;
+                wilcardEnd = "$";
+            }
+            else if((bLast == "$") && b.length == a.length)
+            {
+                loopable = b;
+                comparable = a;
+                wilcardEnd = "$";
+            }
+
+            if(wilcardEnd == "$")
+            {
+                console.log(loopable);
+                console.log(comparable);
             }
 
             if(!wilcardEnd && a.length != b.length)
@@ -59,7 +80,9 @@ module.exports=
 
             for(var l in loopable)
             {
-                if(comparable.indexOf(loopable[l])== -1 && loopable[l] != "*")
+
+
+                if(comparable.indexOf(loopable[l])== -1 && loopable[l] != "*" && loopable[l] !=  "$")
                 {
                     return false;
                 }

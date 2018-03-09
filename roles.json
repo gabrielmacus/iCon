@@ -12,17 +12,22 @@
     "api.person.*.assignments":
     {
       "GET":{"access_level":1}
-    },
+    }
+    ,
     "api.person.demo":
     {
       "POST":{}
-    },
-    "api.person.*":
+    }
+    ,
+    "api.person.$":
     {
-      "PUT":{"access_level":2}
+      "GET":{"access_level":1},
+      "PUT":{"access_level":2},
+      "DELETE":{"access_level":1}
     },
     "api.person":
     {
+      "GET":{"access_level":1},
       "POST":{}
     }
 

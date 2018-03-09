@@ -11,9 +11,9 @@ var RoleService = require('../services/RoleService');
 var passport = require('passport');
 
 //Action
-router.all(['/:model' ,'/:model/:id','/:model/:action','/:model/:id/:action'],passport.authenticate(['jwt']),function(req, res, next){
+router.all(['/:model' ,'/:model/:id([a-fA-F\\d]{24})','/:model/:id([a-fA-F\\d]{24})/:action','/:model/:action'],passport.authenticate(['jwt']),function(req, res, next){
 
-    console.log("HEREEE!");
+
 
     req.model= ModelService.LoadModel(req);
 
