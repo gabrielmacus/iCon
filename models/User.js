@@ -6,6 +6,8 @@ const bcrypt = require('bcrypt');
 const findOrCreate = require('mongoose-findorcreate')
 
 var schema = new Schema({
+
+    createdBy:{type:Schema.Types.ObjectId,ref:'User'},
     facebook : {id:{type:String},picture:{type:String}},
     name: {type:String, required:true},
     surname: {type:String, required:true},

@@ -5,12 +5,12 @@ const Schema = mongoose.Schema;
 
 var schema = new Schema({
     name: {type:String, required:true},
-    surname: {type:String, required:true},
+    description: {type:String, required:true},
     createdBy:{type:Schema.Types.ObjectId,ref:'User',required:true},
-    assignments:[{type:Schema.Types.ObjectId,ref:'Assignment'}],
+    images:[{ref:'Image',type:Schema.Types.ObjectId}]
 
 }, {
-        timestamps: true
-    });
+    timestamps: true
+});
 
-module.exports= mongoose.model('Person',schema);
+module.exports= mongoose.model('Pet',schema);

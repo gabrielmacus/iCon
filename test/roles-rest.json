@@ -33,16 +33,25 @@
     },
     "api.post-demo.$":
     {
+      "GET":{"access_level":2},
+      "PUT":{"access_level":2},
+      "DELETE":{"access_level":2}
+    },
+    "api.post-demo":
+    {
+      "POST":{}
+    }
+
+  },
+  "Premium User":
+  {
+    "api.post-demo.$":
+    {
       "GET":{"access_level":2}
     },
     "api.post-demo":
     {
       "POST":{}
-    },
-    "api.file.upload":
-    {
-      "POST":{}
     }
-
   }
 }

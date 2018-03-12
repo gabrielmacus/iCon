@@ -1,0 +1,13 @@
+<form data-ng-submit="login()">
+    <div class="form-field">
+        <label>{{ 'username' | translate }}</label>
+        <input data-ng-model="user.username">
+    </div>
+    <div class="form-field">
+        <label>{{ 'password' | translate }}</label>
+        <input type="password" data-ng-model="user.password">
+    </div>
+    <div class="form-button">
+        <button type="submit">{{ 'login' | translate}}</button>
+    </div>
+</form>

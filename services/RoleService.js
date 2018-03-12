@@ -67,12 +67,6 @@ module.exports=
                 wilcardEnd = "$";
             }
 
-            if(wilcardEnd == "$")
-            {
-                console.log(loopable);
-                console.log(comparable);
-            }
-
             if(!wilcardEnd && a.length != b.length)
             {
                 return false;
@@ -122,7 +116,7 @@ module.exports=
                     if(module.exports.CompareEndpoints(endpoint,path) && roles[user.role][i][req.method])
                     {
 
-                        permission = (roles[user.role][i][req.method].access_level)?roles[user.role][i][req.method].access_level:1;
+                        permission = (typeof  roles[user.role][i][req.method].access_level !== "undefined")?roles[user.role][i][req.method].access_level:1;
 
                         break;
                     }
@@ -131,7 +125,7 @@ module.exports=
                 }
 
 
-                return permission;
+                return (permission == 0)?false:permission ;
 
             }
             catch (e)

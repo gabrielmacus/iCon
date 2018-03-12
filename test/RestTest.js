@@ -3,8 +3,9 @@ const expect = chai.expect;
 const chaiHttp = require('chai-http');
 const path = require('path');
 const User = require('../models/User');
-
+const Person = require('../models/Person');
 chai.use(chaiHttp);
+const async = require('async');
 
 const app = require('../app.js');
 const mongoose  =require('mongoose');
@@ -13,55 +14,137 @@ const mongoose  =require('mongoose');
 describe('REST test', function() {
 
     var token = "";
+    var token2 ="";
+    var token3="";
+    var id2 ="";
+    var idToUpdate = "";
+    var idPostDemo ="";
+
     before(function (done) {
 
-        mongoose.connect(process.env.DB_TEST_STRING, function () {
 
-            mongoose.connection.db.dropDatabase();
+        async.series([
+            function (callback) {
+                mongoose.connect(process.env.DB_TEST_STRING, function () {
 
+                    mongoose.connection.db.dropDatabase();
+                    callback();
 
-            User.create({
-                "_id": "5aa0377f4f6a8dbf3e2e38ac",
-                "name": "Gabriel",
-                "surname": "Macus",
-                "password": "demodemo",
-                "email": "gabrielmacus2@gmail.com",
-                "username": "gabrielmacus2",
-                "role": "User",
-                "status": "active",
-                "__v": 0
-            }, function (err, user) {
+                });
 
-                console.log(user);
+            },
+            function (callback) {
 
-                chai.request(app)
-                    .post('/auth/token?test=true')
-                    .send({
-                        password: "demodemo",
-                        username: "gabrielmacus2"
-                    })
-                    .end(function (error, response) {
-                        // Now let's check our response
+                User.create({
+                    "name": "James",
+                    "surname": "Johnson",
+                    "password": "demodemo",
+                    "email": "jamesjohnson@gmail.com",
+                    "username": "jamesjohnson",
+                    "role": "User",
+                    "status": "active",
+                    "__v": 0
+                }, function (err, user) {
 
-                        expect(response.body).to.have.property('access_token');
-                        expect(response).to.have.status(200);
-                        token = response.body.access_token;
-                        done();
+                    chai.request(app)
+                        .post('/auth/token?test=true')
+                        .send({
+                            password: "demodemo",
+                            username: "jamesjohnson"
+                        })
+                        .end(function (error, response) {
+                            // Now let's check our response
 
-                    });
+                            expect(response.body).to.have.property('access_token');
+                            expect(response).to.have.status(200);
+                            token2 = response.body.access_token;
 
+                            callback();
 
-            });
-
-
-        });
-
-    })
+                        });
 
 
-    var idToUpdate = "";
 
-    it("Creates a person", function (done) {
+                });
+
+
+            },
+            function (callback) {
+
+                User.create({
+                    "name": "Gabriel",
+                    "surname": "Macus",
+                    "password": "demodemo",
+                    "email": "gabrielmacus2@gmail.com",
+                    "username": "gabrielmacus2",
+                    "role": "User",
+                    "status": "active",
+                    "__v": 0
+                }, function (err, user) {
+
+
+                    chai.request(app)
+                        .post('/auth/token?test=true')
+                        .send({
+                            password: "demodemo",
+                            username: "gabrielmacus2"
+                        })
+                        .end(function (error, response) {
+                            // Now let's check our response
+
+                            expect(response.body).to.have.property('access_token');
+                            expect(response).to.have.status(200);
+                            token = response.body.access_token;
+
+                            callback();
+
+                        });
+
+
+                });
+
+
+            },
+            function (callback) {
+
+                User.create({
+                    "name": "Jim",
+                    "surname": "Smith",
+                    "password": "demodemo",
+                    "email": "jimsmith@gmail.com",
+                    "username": "jimsmith",
+                    "role": "Premium User",
+                    "status": "active",
+                    "__v": 0
+                }, function (err, user) {
+
+
+                    chai.request(app)
+                        .post('/auth/token?test=true')
+                        .send({
+                            password: "demodemo",
+                            username: "jimsmith"
+                        })
+                        .end(function (error, response) {
+                            // Now let's check our response
+
+                            expect(response.body).to.have.property('access_token');
+                            expect(response).to.have.status(200);
+                            token3 = response.body.access_token;
+                            done();
+
+                        });
+
+
+                });
+
+            }
+        ]);
+
+
+    });
+
+    it("POST a person", function (done) {
 
         var person = {
             name: "Juan",
@@ -83,7 +166,7 @@ describe('REST test', function() {
 
     });
 
-    it("Creates another person", function (done) {
+    it("POST another person", function (done) {
 
         var person = {
             name: "Roberto",
@@ -98,7 +181,35 @@ describe('REST test', function() {
                 // Now let's check our response
                 expect(response).to.have.status(200);
                 expect(response.body).to.have.property('_id');
+                id2 = response.body._id;
+                Person.find({}).exec(function (err,persons) {
+                    expect(persons).to.have.lengthOf(2);
+                    done();
+                })
+
+
+            });
+
+    });
+
+    it("User 2 POST a postDemo", function (done) {
+
+        var demo = {
+            title: "Lo que el viento se llevó",
+            text: "Blah foo bar"
+        };
+        chai.request(app)
+            .post('/api/post-demo?test=true')
+            .set('Authorization', 'JWT ' + token2)
+            .send(demo)
+            .end(function (error, response) {
+
+                // Now let's check our response
+                expect(response).to.have.status(200);
+                expect(response.body).to.have.property('_id');
+                idPostDemo = response.body._id;
                 done();
+
 
             });
 
@@ -175,7 +286,6 @@ describe('REST test', function() {
 
     });
 
-
     it("GET  person assignments", function (done) {
 
 
@@ -228,13 +338,133 @@ describe('REST test', function() {
     });
 
 
+    it("User 2 tries to GET person created by User 1", function (done) {
 
 
+        chai.request(app)
+            .get('/api/person/'+id2+'?test=true')
+            .set('Authorization', 'JWT ' + token2)
+            .end(function (error, response) {
 
 
+                // Now let's check our response
+                expect(response).to.have.status(403);
+                done();
+
+            });
+
+    });
+
+    it("User 2 tries to PUT person created by User 1", function (done) {
 
 
+        chai.request(app)
+            .put('/api/person/'+id2+'?test=true')
+            .send({name:"Juancito"})
+            .set('Authorization', 'JWT ' + token2)
+            .end(function (error, response) {
 
+
+                // Now let's check our response
+                expect(response).to.have.status(403);
+                done();
+
+            });
+
+    });
+
+    it("User 2 tries to DELETE person created by User 1", function (done) {
+
+
+        chai.request(app)
+            .delete('/api/person/'+id2+'?test=true')
+            .set('Authorization', 'JWT ' + token2)
+            .end(function (error, response) {
+
+
+                // Now let's check our response
+                expect(response).to.have.status(403);
+                done();
+
+            });
+
+    });
+
+    it("User PUT postDemo created by User 2,from the same permission group", function (done) {
+
+        var demo = {
+            title:"EDITED TITLE"
+        };
+
+        chai.request(app)
+            .put('/api/post-demo/'+idPostDemo+'?test=true')
+            .set('Authorization', 'JWT ' + token)
+            .send(demo)
+            .end(function (error, response) {
+
+
+                // Now let's check our response
+                expect(response).to.have.status(200);
+                done();
+
+            });
+
+    });
+
+    it("User 3 tries to PUT postDemo created by User 2,from different permission group", function (done) {
+
+        var demo = {
+            title:"EDITED TITLE 2"
+        };
+
+        chai.request(app)
+            .put('/api/post-demo/'+idPostDemo+'?test=true')
+            .set('Authorization', 'JWT ' + token3)
+            .send(demo)
+            .end(function (error, response) {
+
+
+                // Now let's check our response
+                expect(response).to.have.status(403);
+                done();
+
+            });
+
+    });
+
+    it("User 3 tries to DELETE postDemo created by User 2,from different permission group", function (done) {
+
+
+        chai.request(app)
+            .delete('/api/post-demo/'+idPostDemo+'?test=true')
+            .set('Authorization', 'JWT ' + token3)
+            .end(function (error, response) {
+
+
+                // Now let's check our response
+                expect(response).to.have.status(403);
+                done();
+
+            });
+
+    });
+
+    it("User DELETE postDemo created by User 2,from the same permission group", function (done) {
+
+
+        chai.request(app)
+            .delete('/api/post-demo/'+idPostDemo+'?test=true')
+            .set('Authorization', 'JWT ' + token)
+            .end(function (error, response) {
+
+
+                // Now let's check our response
+                expect(response).to.have.status(200);
+                done();
+
+            });
+
+    });
 
 
 

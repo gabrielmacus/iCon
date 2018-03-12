@@ -1,0 +1,61 @@
+doctype html
+html
+    head
+        title= title
+        link(rel='stylesheet', href='/stylesheets/reset.css')
+        link(rel='stylesheet', href='/stylesheets/style.css')
+
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js")
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-route.js")
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/angular-translate/2.17.0/angular-translate.js")
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/angular-translate-loader-static-files/2.17.0/angular-translate-loader-static-files.js")
+        script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular-cookies.js")
+
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js")
+
+        script.
+            var app = angular.module("app", ["ngRoute","pascalprecht.translate",'ngCookies']);
+            app.config(function ($routeProvider) {
+                $routeProvider
+                    .when("/", {
+                        templateUrl: "views/main-login.html",
+                        controller:"login-controller"
+                    })
+
+            });
+            app.config(['$translateProvider', function ($translateProvider,$translatePartialLoaderProvider) {
+                $translateProvider.useStaticFilesLoader({
+                    files: [
+                        {
+                            prefix: '/locales/',
+                            suffix: '.json'
+                        }]
+                });
+                $translateProvider.preferredLanguage('es');
+            }]);
+
+            app.controller('login-controller', function ($rootScope,$scope, $cookies) {
+
+                $scope.login=function () {
+
+                    axios.post('/auth/token', $scope.user)
+                        .then(function (response) {
+
+                            $cookies.put('access_token',response.data.access_token,{path:'/'});
+                            location.href = "/?auth_token="+response.data.access_token;
+
+                        })
+                        .catch(function (error) {
+                        console.log(error);
+
+                        });
+
+                }
+
+
+            });
+
+    body(data-ng-app="app" )
+
+        main
+            block content

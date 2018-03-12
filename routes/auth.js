@@ -30,7 +30,7 @@ passport.deserializeUser(function(id, done) {
 var JwtStrategy = require('passport-jwt').Strategy,
     ExtractJwt = require('passport-jwt').ExtractJwt;
 var opts = {}
-opts.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme("JWT");
+opts.jwtFromRequest = ExtractJwt.fromExtractors([ExtractJwt.fromAuthHeaderWithScheme("JWT"),ExtractJwt.fromUrlQueryParameter("access_token")]);
 opts.secretOrKey = process.env.APP_JWT_SECRET;
 //opts.issuer = process.env.APP_URL; //TODO: which should be the issuer?
 //opts.audience = process.env.APP_URL;

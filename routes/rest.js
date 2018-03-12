@@ -9,22 +9,30 @@ var StringService = require('../services/StringService');
 require('mongoose-pagination');
 var RoleService = require('../services/RoleService');
 var passport = require('passport');
+var User = require('../models/User');
+var async = require('async');
+const ACCESS_LEVEL_ME = 1;
+const ACCESS_LEVEL_GROUP = 2;
+const ACCESS_LEVEL_ALL = 3;
 
 //Action
 router.all(['/:model' ,'/:model/:id([a-fA-F\\d]{24})','/:model/:id([a-fA-F\\d]{24})/:action','/:model/:action'],passport.authenticate(['jwt']),function(req, res, next){
 
-
+    console.log("HERE");
 
     req.model= ModelService.LoadModel(req);
 
     req.action = ModelService.LoadAction(req);
+
 
     req.id = ModelService.LoadID(req);
 
 
     req.rest = true;
 
-    req.authorization = RoleService.IsAuthorized(req.user,req);
+    req.authorization = RoleService.IsAuthorized(req.user,req,req.rolesPath);
+
+
 
 
      if(!req.authorization)
@@ -37,17 +45,20 @@ router.all(['/:model' ,'/:model/:id([a-fA-F\\d]{24})','/:model/:id([a-fA-F\\d]{2
     try
     {
 
-        var Route = require('../routes/'+req.model.modelName );
+
+        var Route = require('../routes/'+req.model.modelName.toLowerCase());
 
         var Action = StringService.SnakeToCamel(req.action);
 
         Route[Action](req,res,next);
 
-
     }
     catch (e)
     {
-
+        if(req.app.get('env') !== 'production')
+        {
+            console.error(e);
+        }
 
         req.page = (req.query.page)?req.query.page:1;
 
@@ -69,21 +80,87 @@ router.all(['/:model' ,'/:model/:id([a-fA-F\\d]{24})','/:model/:id([a-fA-F\\d]{2
 //Read one
 router.get('/:model/:id',function (req,res,next) {
 
-
     if(!ObjectID.isValid(req.id))
     {
      return  next();
     }
+    
+    var query = {_id:req.id};
+    req.model.findOne(query).populate("createdBy").exec(function (err,result) {
 
-    req.model.findOne({_id:req.id}).exec(function (err,result) {
         if(err)
         {
             //TODO: Handle errors
             console.log(err);
         }
+        var status = 200;
+        async.series([
+            function (callback) {
 
-        return res.json(result);
+
+
+                if(!result || result.length == 0)
+                {
+                    result = {};
+                    status = 404;
+                    callback();
+                }
+                else
+                {
+                    switch (req.authorization)
+                    {
+                        case ACCESS_LEVEL_ME:
+
+
+
+                            if(result.createdBy._id.toString() !=  req.user._id.toString())
+                            {
+                                result = {};
+                                status = 403;
+                            }
+                            callback();
+
+                            break;
+                        case ACCESS_LEVEL_GROUP:
+
+                            User.find({}).exec(function (err,users) {
+
+                                if(users.findIndex(function (el) {
+                                        return el.role == result.createdBy.role;
+                                    }) == -1)
+                                {
+                                    status = 403;
+                                    result = {};
+                                }
+
+                                return  callback();
+
+                            })
+
+
+                            break;
+                        case  ACCESS_LEVEL_ALL:
+
+                            callback();
+
+                            break;
+                    }
+                }
+
+
+
+            },
+            function () {
+                return res.status(status).json(result);
+            }
+        ]);
+
     });
+
+
+
+    
+    
 
 
 
@@ -91,41 +168,180 @@ router.get('/:model/:id',function (req,res,next) {
 //Update one
 router.put('/:model/:id',function (req,res,next) {
 
+
     if(!ObjectID.isValid(req.id))
     {
         return  next();
     }
 
+    var status = 200;
 
-    req.model.update({_id:req.id},{'$set':req.body}).exec(function (err,result) {
+    var query = {_id:req.id};
+
+    req.model.findOne(query).populate('createdBy').exec(function (err,result) {
         if(err)
         {
-            //TODO: Handle errors
-            console.log(err);
+            console.error(err);
+            //TODO: handle errors
         }
 
-        return res.json(result);
-    });
+        async.series([
+            function (callback) {
+                switch (req.authorization)
+                {
+                    case ACCESS_LEVEL_ME:
+
+
+
+                        if(result.createdBy._id.toString() !=  req.user._id.toString())
+                        {
+                            status = 403;
+                        }
+
+                        callback();
+
+                        break;
+                    case ACCESS_LEVEL_GROUP:
+
+                        User.find({}).exec(function (err,users) {
+
+
+                            if(users.findIndex(function (el) {
+                                    return el.role == result.createdBy.role;
+                                }) == -1)
+                            {
+                                status = 403;
+                            }
+
+                            return  callback();
+
+                        })
+
+
+                        break;
+                    case  ACCESS_LEVEL_ALL:
+
+                        callback();
+
+                        break;
+                }
+
+
+            },function () {
+
+
+                if(status!=200)
+                {
+                    return res.status(status).json(result);
+                }
+
+                req.model.update(query,{'$set':req.body}).exec(function (err,result) {
+                    if(err)
+                    {
+                        //TODO: Handle errors
+                        console.log(err);
+                    }
+
+                    return res.json(result);
+                });
+            }
+        ]);
+
+    })
+
+
+
 
 
 });
 //Delete  one
 router.delete('/:model/:id',function (req,res,next) {
 
+
     if(!ObjectID.isValid(req.id))
     {
         return  next();
     }
+    var query= {_id:req.id};
 
-    req.model.findOneAndRemove({_id:req.id}).exec(function (err) {
+
+
+    req.model.findOne(query).populate('createdBy').exec(function (err,result) {
+
         if(err)
         {
-            //TODO: Handle errors
-            console.log(err);
+            console.error(err);
         }
 
-        return res.json({});
+        var status =200;
+        async.series([
+            function (callback) {
+                switch (req.authorization)
+                {
+                    case ACCESS_LEVEL_ME:
+
+                        if(result.createdBy._id.toString() !=  req.user._id.toString())
+                        {
+                            status = 403;
+                        }
+
+                        callback();
+                        break;
+                    case ACCESS_LEVEL_GROUP:
+
+                        User.find({}).exec(function (err,users) {
+
+                            if(users.findIndex(function (el) {
+                                    return el.role == result.createdBy.role;
+                                }) == -1)
+                            {
+                                status = 403;
+                            }
+
+                            return  callback();
+
+                        })
+
+                        break;
+                    case  ACCESS_LEVEL_ALL:
+
+                        callback();
+
+                        break;
+                }
+
+
+            },
+            function () {
+
+
+                if(status!=200)
+                {
+                    return res.status(status).json(result);
+                }
+
+
+                req.model.remove(query).exec(function (err) {
+                    if(err)
+                    {
+                        //TODO: Handle errors
+                        console.log(err);
+                    }
+
+                    return res.json({});
+                });
+
+            }
+        ]);
+
+
+
+
+
+
     });
+
+
 
 
 });
@@ -141,23 +357,70 @@ router.get('/:model', function(req, res, next) {
     var projection = query.projection;
     delete query.projection;
 
-    var find = req.model.find(filter,projection,query);
 
-        find.paginate(req.page,req.limit,function (err,results,total) {
 
-            //TODO: Handle errors
-            if(err)
+
+
+    async.series([
+        function (callback) {
+            switch (req.authorization)
             {
-                console.log(err);
+                case ACCESS_LEVEL_ME:
+
+                    filter.createdBy = req.user._id;
+
+                    callback();
+
+                    break;
+                case ACCESS_LEVEL_GROUP:
+
+                    User.find({}).exec(function (err,users) {
+
+                        filter.createdBy = {'$in':users.map(function (el) {
+                            return el["_id"];
+                        })};
+
+                        return  callback();
+
+                    })
+
+
+                    break;
+                case  ACCESS_LEVEL_ALL:
+
+                    callback();
+
+                    break;
             }
 
-            if(results)
-            {
 
-                res.json({docs:results,pagination:{total:total,results:results.length,page:req.page}});
-            }
+        },function () {
 
-        });
+
+            req.model.find(filter,projection,query).paginate(req.page,req.limit,function (err,results,total) {
+
+                //TODO: Handle errors
+                if(err)
+                {
+                    console.log(err);
+                }
+
+                if(results)
+                {
+
+                    res.json({docs:results,pagination:{total:total,results:results.length,page:req.page}});
+                }
+
+            });
+
+
+        }
+    ]);
+
+
+
+
+
 
 });
 //Create one
@@ -165,7 +428,12 @@ router.post('/:model',function(req, res, next){
 
     req.body.createdBy = req.user._id;
 
+
      req.model.create(req.body,function (err,result) {
+         if(err)
+         {//TODO: handle errors
+             console.error(err);
+         }
         res.json(result);
     });
 
