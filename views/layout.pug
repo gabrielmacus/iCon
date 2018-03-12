@@ -11,6 +11,7 @@ html
     script(src="https://cdnjs.cloudflare.com/ajax/libs/angular-translate-loader-static-files/2.17.0/angular-translate-loader-static-files.js")
     script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular-cookies.js")
 
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js")
 
     script.
         var app = angular.module("app", ["ngRoute","pascalprecht.translate",'ngCookies']);
@@ -36,16 +37,41 @@ html
         app.config(function ($routeProvider) {
             $routeProvider
                 .when("/", {
-                    templateUrl: "views/main.html"
+                    templateUrl: "views/main.html",
+                    controller:"main-controller"
                 })
                 .when("/adopt", {
                      templateUrl: "views/adopt.html"
                  })
+                .when("/give-adoption", {
+                    templateUrl: "views/give-adoption.html",
+                    controller:"give-adoption-controller"
+                })
+
 
         });
-        app.controller('main-controller', function ($rootScope) {
+        app.controller('main-controller', function ($rootScope,$cookies) {
+
+            vm = $rootScope;
+
+            $rootScope.headers = {'Authorization':'JWT '+$cookies.get("access_token")};
+
+            $rootScope.petTypes = [];
+
+            axios.get("api/pet-type",{"headers":$rootScope.headers}).then(function (response) {
+                $rootScope.petTypes = response.data.docs;
+                $rootScope.$apply();
+
+            }).catch(function (e) {
+
+                //TODO: handle ajax errors
+                console.log(e);
+
+            });
 
         });
+
+    script(src="javascripts/controllers/GiveAdoptionController.js")
 
   body(data-ng-app="app" data-ng-controller="main-controller")
 

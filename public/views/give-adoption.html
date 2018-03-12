@@ -1,0 +1,76 @@
+<form data-ng-submit="login()">
+    <div class="form-field">
+        <label>{{ 'adoption.pet.name' | translate }}</label>
+        <input data-ng-model="pet.name">
+    </div>
+
+    <div class="form-field">
+        <label>{{ 'adoption.pet.specie' | translate }}</label>
+        <select data-ng-model="pet.type" data-ng-options="petType as petType.name for petType in petTypes track by petType._id"></select>
+    </div>
+
+    <div class="form-field">
+
+        <label>{{ 'adoption.pet.age' | translate }}</label>
+
+        <input data-ng-model="pet.age">
+
+    </div>
+
+    <div class="form-field">
+        <label>{{ 'adoption.pet.gender' | translate }}</label>
+
+        <div class="radio-field">
+            <label>{{ 'adoption.pet.gender.male' | translate }}</label>
+            <input data-ng-model="pet.gender"  type="radio" value="male">
+        </div>
+        <div class="radio-field">
+
+            <label>{{ 'adoption.pet.gender.female' | translate }}</label>
+            <input data-ng-model="pet.gender"  type="radio" value="female">
+
+        </div>
+
+    </div>
+
+
+
+    <div class="form-field">
+        <label>{{ 'adoption.pet.size' | translate }}</label>
+
+        <div class="radio-field">
+            <label>{{ 'adoption.pet.size.small' | translate }}</label>
+            <input data-ng-model="pet.size"  type="radio" value="small">
+        </div>
+        <div class="radio-field">
+
+            <label>{{ 'adoption.pet.size.medium' | translate }}</label>
+            <input data-ng-model="pet.size"  type="radio" value="medium">
+
+        </div>
+
+        <div>
+            <label>{{ 'adoption.pet.size.big' | translate }}</label>
+            <input data-ng-model="pet.size"  type="radio" value="big">
+        </div>
+    </div>
+
+    <div class="form-field">
+        <label>{{ 'adoption.pet.description' | translate }}</label>
+        <textarea data-ng-model="pet.description"></textarea>
+    </div>
+
+
+    <div class="form-field">
+
+        <label>{{ 'adoption.pet.multimedia' | translate }}</label>
+
+
+    </div>
+
+
+
+    <div class="form-button">
+        <button type="submit">{{ 'ready' | translate}}</button>
+    </div>
+</form>

@@ -1,5 +1,15 @@
 {
 
+  "Root":
+  {
+    "*":
+    {
+      "GET":{"access_level":3},
+      "POST":{"access_level":3},
+      "PUT":{"access_level":3},
+      "DELETE":{"access_level":3}
+    }
+  },
   "Publisher":
   {
     "post.*":

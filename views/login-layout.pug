@@ -42,7 +42,7 @@ html
                         .then(function (response) {
 
                             $cookies.put('access_token',response.data.access_token,{path:'/'});
-                            location.href = "/?auth_token="+response.data.access_token;
+                            location.href = "/?access_token="+response.data.access_token;
 
                         })
                         .catch(function (error) {

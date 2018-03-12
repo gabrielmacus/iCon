@@ -73,6 +73,37 @@ describe('RoleService', function() {
         expect(RoleService.IsAuthorized(user,req,rolesPath)).to.equal(3);
 
 
+        req.method="GET";
+        user.role ="Root";
+        req.path="/pet/211111";
+        expect(RoleService.IsAuthorized(user,req,rolesPath)).to.equal(3);
+
+
+        req.method="GET";
+        user.role ="Root";
+        req.path="/pet";
+        expect(RoleService.IsAuthorized(user,req,rolesPath)).to.equal(3);
+
+
+
+        req.method="POST";
+        user.role ="Root";
+        req.path="/pet";
+        expect(RoleService.IsAuthorized(user,req,rolesPath)).to.equal(3);
+
+
+        req.method="PUT";
+        user.role ="Root";
+        req.path="/pet/123123";
+        expect(RoleService.IsAuthorized(user,req,rolesPath)).to.equal(3);
+
+
+        req.method="DELETE";
+        user.role ="Root";
+        req.path="/pet/11111";
+        expect(RoleService.IsAuthorized(user,req,rolesPath)).to.equal(3);
+
+
 
 
 

@@ -14,12 +14,13 @@ module.exports=
     {
         upload:function (req,res,next) {
 
+            /*
             console.log("ASDSDA");
             if(!req.files)
             {
                 //TODO: handle errors
                 return res.json({});
-            }
+            }*/
 
             /*
             var file = new req.model({filename:"filename",contentType:"sdasa"});

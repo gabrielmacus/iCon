@@ -5,8 +5,11 @@ module.exports={
     },
     SnakeToCamel : function(s) {
 
+        if(typeof s == "string")
+        {
 
-        return s.replace(/(\-\w)/g, function(m){return m[1].toUpperCase();});
-
+            return s.replace(/(\-\w)/g, function(m){return m[1].toUpperCase();});
+        }
+        return false;
     }
 }

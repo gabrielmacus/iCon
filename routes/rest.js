@@ -18,7 +18,6 @@ const ACCESS_LEVEL_ALL = 3;
 //Action
 router.all(['/:model' ,'/:model/:id([a-fA-F\\d]{24})','/:model/:id([a-fA-F\\d]{24})/:action','/:model/:action'],passport.authenticate(['jwt']),function(req, res, next){
 
-    console.log("HERE");
 
     req.model= ModelService.LoadModel(req);
 
@@ -58,6 +57,12 @@ router.all(['/:model' ,'/:model/:id([a-fA-F\\d]{24})','/:model/:id([a-fA-F\\d]{2
         if(req.app.get('env') !== 'production')
         {
             console.error(e);
+        }
+
+        if(!req.model)
+        {
+            //TODO: render 404
+            return res.status(404).end('Not Found');
         }
 
         req.page = (req.query.page)?req.query.page:1;
@@ -350,16 +355,13 @@ router.get('/:model', function(req, res, next) {
 
     //Deletes all non related to query fields
     delete req.query.p;
+    delete req.query.access_token;
 
     var query = apq(req.query);
     var filter = query.filter;
     delete query.filter;
     var projection = query.projection;
     delete query.projection;
-
-
-
-
 
     async.series([
         function (callback) {
@@ -396,8 +398,8 @@ router.get('/:model', function(req, res, next) {
 
         },function () {
 
-
             req.model.find(filter,projection,query).paginate(req.page,req.limit,function (err,results,total) {
+
 
                 //TODO: Handle errors
                 if(err)
@@ -407,8 +409,8 @@ router.get('/:model', function(req, res, next) {
 
                 if(results)
                 {
-
-                    res.json({docs:results,pagination:{total:total,results:results.length,page:req.page}});
+                    var totalPages = (results.length > 0)? Math.ceil(total/results.length):0;
+                    res.json({docs:results,pagination:{total:total,results:results.length,page:req.page,pages:totalPages}});
                 }
 
             });

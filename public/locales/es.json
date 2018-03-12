@@ -3,6 +3,22 @@
   "password":"Contaseña",
   "login":"Ingresar",
 
+  "ready":"Listo",
+
   "adoption.give":"Dar en adopción",
-  "adoption.receive":"Adoptar"
+  "adoption.receive":"Adoptar",
+  "adoption.pet.name":"Nombre de la mascota",
+  "adoption.pet.specie":"Especie",
+  "adoption.pet.gender":"Género",
+  "adoption.pet.gender.male":"Macho",
+  "adoption.pet.gender.female":"Hembra",
+  "adoption.pet.furLength":"Largo del pelaje",
+  "adoption.pet.size":"Tamaño",
+  "adoption.pet.size.small":"Pequeño",
+  "adoption.pet.size.medium":"Mediano",
+  "adoption.pet.size.big":"Grande",
+  "adoption.pet.age":"Edad (aproximada)",
+  "adoption.pet.description":"Descripción",
+  "adoption.pet.multimedia":"Multimedia (imágenes,videos)"
+
 }

@@ -8,8 +8,15 @@ module.exports={
 
         var modelName = (req.params.model)?StringService.UcFirst(StringService.SnakeToCamel(req.params.model)):false;
 
-        return require('../models/'+modelName);
+        try {
 
+            return require('../models/'+modelName);
+
+        }
+        catch (e)
+        {
+            return false;
+        }
     },
     LoadAction:function (req) {
         return (req.params.action)?req.params.action:false;

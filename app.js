@@ -11,7 +11,6 @@ var lessMiddleware = require('less-middleware');
 var dotenv = require('dotenv').config({path:path.join(__dirname,".env")});
 var passport = require('passport');
 var i18n = require("i18n");
-var fileUpload = require('express-fileupload');
 
 
 //Routes
@@ -42,7 +41,6 @@ app.use(cookieParser());
 app.use(lessMiddleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
-app.use(fileUpload);
 
 app.use(function (req,res,next) {
 
