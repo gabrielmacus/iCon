@@ -11,6 +11,10 @@
   },
   "User":
   {
+    "api.pet-type":
+    {
+      "GET":{"access_level":3}
+    },
     "api.user":
     {
       "GET":{"access_level":1},

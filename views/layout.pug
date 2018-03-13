@@ -10,11 +10,12 @@ html
     script(src="https://cdnjs.cloudflare.com/ajax/libs/angular-translate/2.17.0/angular-translate.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/angular-translate-loader-static-files/2.17.0/angular-translate-loader-static-files.js")
     script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular-cookies.js")
+    script(src="javascripts/angular-media-preview.js")
 
     script(src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js")
 
     script.
-        var app = angular.module("app", ["ngRoute","pascalprecht.translate",'ngCookies']);
+        var app = angular.module("app", ["ngRoute","pascalprecht.translate",'ngCookies','angular-media-preview']);
         app.config(function ($routeProvider) {
             $routeProvider
                 .when("/", {

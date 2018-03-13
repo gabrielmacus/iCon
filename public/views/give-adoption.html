@@ -1,4 +1,4 @@
-<form data-ng-submit="login()">
+<form data-ng-submit="giveAdoption()">
     <div class="form-field">
         <label>{{ 'adoption.pet.name' | translate }}</label>
         <input data-ng-model="pet.name">
@@ -6,7 +6,7 @@
 
     <div class="form-field">
         <label>{{ 'adoption.pet.specie' | translate }}</label>
-        <select data-ng-model="pet.type" data-ng-options="petType as petType.name for petType in petTypes track by petType._id"></select>
+        <select data-ng-model="pet.type" data-ng-options="petType._id as petType.name for petType in petTypes track by petType._id"></select>
     </div>
 
     <div class="form-field">
@@ -65,6 +65,8 @@
 
         <label>{{ 'adoption.pet.multimedia' | translate }}</label>
 
+
+        <media-preview data-ng-model="pet.multimedia" preview-container="preview-container" multiple></media-preview>
 
     </div>
 
