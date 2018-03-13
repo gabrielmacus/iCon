@@ -64,9 +64,9 @@
     <div class="form-field">
 
         <label>{{ 'adoption.pet.multimedia' | translate }}</label>
+        <button class="button" type="button" data-ngf-select data-ng-model="pet.multimedia" data-ngf-multiple="true">Select</button>
 
-
-        <media-preview data-ng-model="pet.multimedia" preview-container="preview-container" multiple></media-preview>
+        <media-preview media="pet.multimedia"></media-preview>
 
     </div>
 

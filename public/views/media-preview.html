@@ -1,0 +1,12 @@
+
+
+<ul class="media-previews">
+    <li class="preview" data-ng-repeat="p in previews">
+        <figure>
+            <img data-ng-if="checkType(p) == 'image'" data-ng-src="{{p.src}}">
+
+            <video data-ng-if="checkType(p) == 'video'" data-ng-src="{{p.src}}"></video>
+
+        </figure>
+    </li>
+</ul>

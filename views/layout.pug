@@ -10,12 +10,15 @@ html
     script(src="https://cdnjs.cloudflare.com/ajax/libs/angular-translate/2.17.0/angular-translate.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/angular-translate-loader-static-files/2.17.0/angular-translate-loader-static-files.js")
     script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular-cookies.js")
-    script(src="javascripts/angular-media-preview.js")
+
+    script(src="javascripts/ng-file-upload-shim.min.js")
+    script(src="javascripts/ng-file-upload.min.js")
+
 
     script(src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js")
 
     script.
-        var app = angular.module("app", ["ngRoute","pascalprecht.translate",'ngCookies','angular-media-preview']);
+        var app = angular.module("app", ["ngRoute","pascalprecht.translate",'ngCookies','ngFileUpload']);
         app.config(function ($routeProvider) {
             $routeProvider
                 .when("/", {
@@ -71,6 +74,8 @@ html
             });
 
         });
+
+    script(src="javascripts/directives/media-preview.js")
 
     script(src="javascripts/controllers/GiveAdoptionController.js")
 
