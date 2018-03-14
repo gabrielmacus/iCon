@@ -1,22 +1,21 @@
 var FileGridfs=null;
 var gridfs =null;
 const mongoose = require('mongoose');
-
-
-gridfs = require('mongoose-gridfs')({
-    collection:'files',
-    model:'Attachment',
-    mongooseConnection: mongoose.connection
-});
-FileGridfs = gridfs.model;
 module.exports=
     {
-        load:function () {
+        load:function (connection) {
+            gridfs = require('mongoose-gridfs')({
+                collection:'files',
+                model:'Attachment',
+                mongooseConnection:connection
+            });
+            FileGridfs = gridfs.model;
+        },
 
+        model:function () {
+            return FileGridfs;
         },
         remove:function (id,callback) {
-
-            module.exports.load();
 
             FileGridfs.unlinkById(id, function(error, unlinkedAttachment){
 
@@ -26,14 +25,12 @@ module.exports=
         },
         read:function (id) {
 
-            module.exports.load();
             var stream  = FileGridfs.readById(id);
             return stream;
 
         },
         write:function (f,readStream,callback) {
 
-            module.exports.load();
             //create or save a file
             FileGridfs.write(f,
                 readStream,
@@ -47,3 +44,6 @@ module.exports=
 
         }
     }
+
+
+

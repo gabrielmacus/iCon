@@ -18,6 +18,7 @@ var index = require('./routes/index');
 var rest = require('./routes/rest');
 var auth = require('./routes/auth');
 var development = require('./routes/development');
+var media = require('./routes/media');
 
 var app = express();
 
@@ -50,6 +51,7 @@ app.use(function (req,res,next) {
   delete req.query.test;
   next();
 });
+app.use('/media',media);
 app.use('/', index);
 app.use('/api', rest);
 app.use('/auth',auth);

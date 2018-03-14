@@ -44,21 +44,7 @@
 
                     $scope.checkType=function (p) {
 
-                        switch (true)
-                        {
-                            case (p.type.indexOf('image') > -1):
-
-                            return 'image';
-
-                                break;
-                            case (p.type.indexOf('video') > -1):
-
-                                return 'video';
-
-                                break;
-                        }
-
-                        return false;
+                        return checkMediaType(p.type);
 
                     }
                     $scope.$watchCollection('media',function (newVal,oldVal) {

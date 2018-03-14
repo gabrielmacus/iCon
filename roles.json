@@ -15,6 +15,10 @@
     {
       "PUT":{"access_level":1}
     },
+    "api.pet":
+    {
+      "GET":{"access_level":3}
+    },
     "api.pet-type":
     {
       "GET":{"access_level":3}

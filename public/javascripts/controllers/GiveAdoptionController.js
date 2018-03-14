@@ -1,10 +1,28 @@
-app.controller('give-adoption-controller', function ($scope,$rootScope) {
+app.controller('give-adoption-controller', function ($scope,$location,$rootScope) {
     $scope.step=1;
     $scope.pet = {};
+    $scope.pets = [];
     $scope.goToStep=function (i) {
         $scope.step = i;
     }
 
+
+
+    $scope.loadAdoptions=function () {
+
+        axios.get('/api/',{headers:$rootScope.headers}).then(function (response) {
+
+            console.log(response);
+            $scope.pets = response.data.docs;
+            $scope.pets.$apply();
+
+
+        }).catch(function (err) {
+            //TODO:handle error
+            console.log(err);
+        });
+
+    }
 
     $scope.completeAdoption=function () {
         var url = 'api/pet';
@@ -29,29 +47,34 @@ app.controller('give-adoption-controller', function ($scope,$rootScope) {
         var url = 'api/pet/'+$scope.pet._id+"/multimedia";
         var formData = new FormData();
 
-        for(var k in $scope.pet)
+        for(var k in $scope.pet.multimedia)
         {
-            console.log($scope.pet[k]);
-            formData.append(k,$scope.pet[k]);
+            formData.append(k,$scope.pet.multimedia[k]);
+
         }
         var headers  = angular.copy($rootScope.headers);
         headers['Content-Type']='multipart/form-data';
+        console.log(headers);
 
 
 
-        axios({
-            method: 'put',
-            url: url,
-            data: formData,
-            config: { headers:headers}
-        })
+        axios.put(url,formData,{ headers:headers})
             .then(function (response) {
-                //handle success
-                console.log(response);
+
+                $location.path("/give-adoption/list");
+                $scope.$apply();
             })
-            .catch(function (response) {
-                //handle error
-                console.log(response);
+            .catch(function (err) {
+                //TODO:handle error
+                console.log(err);
             });
     }
+
+
+
+
+
+
+
+
 });

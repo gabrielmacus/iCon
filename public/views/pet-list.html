@@ -1,0 +1,128 @@
+<ul  class="pet-list" data-ng-if="pets && pets.length">
+
+    <li class="pet" data-ng-repeat=" p in pets">
+
+
+        <figure>
+            <img data-ng-if="checkMediaType(p.multimedia[0]) == 'image'" data-ng-src="/media/{{p.multimedia[0]._id}}">
+            <video data-ng-if="checkMediaType(p.multimedia[0]) == 'video'" data-ng-src="/media/{{p.multimedia[0]._id}}"></video>
+
+          </figure>
+
+        <div class="data">
+
+
+            <span class="name">{{p.name}}, <span class="age" data-ng-if="p.age > 0">{{ 'pet.years' | translate: '{time:'+p.age+'}' }}</span><span class="age" data-ng-if="p.age < 0">{{ 'pet.months' | translate: '{time:'+p.age+'}' }}</span></span>
+
+            <span class="type">{{p.type.name}}</span>
+
+            <span class="size">
+                <img class="small" data-ng-class="{active:p.size == 'small'}" src="/images/paw.svg">
+                <img class="medium" data-ng-class="{active:p.size == 'medium'}"  src="/images/paw.svg">
+                <img class="big" data-ng-class="{active:p.size == 'big'}"  src="/images/paw.svg">
+            </span>
+
+            <span class="gender" >
+
+            <img data-ng-if="p.gender == 'male'" src="/images/male-sign.svg">
+            <img data-ng-if="p.gender == 'female'" src="/images/female-sign.svg">
+
+            </span>
+        </div>
+
+
+    </li>
+
+</ul>
+
+<div class="pet-list-empty" data-ng-if="!pets || pets.length == 0">
+    <p>
+        {{'pet.list.empty' | translate}}
+    </p>
+</div>
+
+<style>
+    pet-list .pet-list{
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    pet-list .pet-list .pet{
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        height: 250px;
+        position: relative;
+        display: flex;
+        width: 33.33333333333%;
+
+    }
+    pet-list .pet .name
+    {
+        margin: auto;
+    }
+    pet-list .pet-list .pet .data
+    {
+        position: relative;
+        width: 45%;
+        align-items: center;
+        font-size:25px;
+        display: flex;
+        background: #F5F5F5;
+        font-weight: 600;
+    }
+
+    pet-list .pet .type{
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: #3F51B5;
+        font-size: 17px;
+        color: white;
+        font-weight: 300;
+        padding: 6px;
+    }
+
+    pet-list .pet .size .medium
+    {
+        width: 35px;
+    }
+    pet-list .pet .size .big
+    {
+       width: 40px;
+    }
+
+
+    pet-list .pet .size
+    {
+        position: absolute;
+        bottom: 10px;
+
+        right: 10px;
+    }
+    pet-list .pet .size img
+    {width: 30px;
+        opacity: 0.3;
+        margin-left: 8px;
+    }
+
+    pet-list .pet .size img.active
+    {
+        opacity: 1;
+    }
+
+    pet-list .pet .gender
+    {    width: 26px;
+        right: 10px;
+        top: 10px;
+        position: absolute;
+    }
+    pet-list figure
+    {
+        width: 65%;
+    }
+    pet-list img
+    {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
+</style>

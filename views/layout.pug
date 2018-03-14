@@ -18,6 +18,23 @@ html
     script(src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js")
 
     script.
+        function checkMediaType(mime) {
+            switch (true) {
+                case (mime.indexOf('image') > -1):
+
+                    return 'image';
+
+                    break;
+                case (mime.indexOf('video') > -1):
+
+                    return 'video';
+
+                    break;
+            }
+
+            return false;
+        }
+
         var app = angular.module("app", ["ngRoute","pascalprecht.translate",'ngCookies','ngFileUpload']);
         app.config(function ($routeProvider) {
             $routeProvider
@@ -51,12 +68,17 @@ html
                     templateUrl: "views/give-adoption.html",
                     controller:"give-adoption-controller"
                 })
+                .when("/give-adoption/list", {
+                    templateUrl: "views/give-adoption-list.html",
+                    controller: "give-adoption-list-controller"
+                })
 
 
         });
         app.controller('main-controller', function ($rootScope,$cookies) {
 
             vm = $rootScope;
+
 
             $rootScope.headers = {'Authorization':'JWT '+$cookies.get("access_token")};
 
@@ -77,7 +99,11 @@ html
 
     script(src="javascripts/directives/media-preview.js")
 
+    script(src="javascripts/directives/pet-list.js")
+
     script(src="javascripts/controllers/GiveAdoptionController.js")
+
+    script(src="javascripts/controllers/GiveAdoptionListController.js")
 
   body(data-ng-app="app" data-ng-controller="main-controller")
 

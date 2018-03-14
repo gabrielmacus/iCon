@@ -358,6 +358,7 @@ router.get('/:model', function(req, res, next) {
 
     var query = apq(req.query);
     var filter = query.filter;
+
     delete query.filter;
     var projection = query.projection;
     delete query.projection;

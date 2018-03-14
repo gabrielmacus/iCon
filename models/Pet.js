@@ -18,14 +18,16 @@ var schema = new Schema({
     timestamps: true
 });
 //https://stackoverflow.com/questions/21592351/mongoose-js-force-always-populate
-var autoPopulatePetType = function(next) {
+var autoPopulate = function(next) {
     this.populate('type');
+    this.populate('multimedia');
     next();
 };
 
+
 schema.
-pre('findOne', autoPopulatePetType).
-pre('find', autoPopulatePetType);
+pre('findOne', autoPopulate).
+pre('find', autoPopulate);
 
 
 

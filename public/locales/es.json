@@ -21,6 +21,11 @@
   "adoption.pet.description":"Descripción",
   "adoption.pet.multimedia":"Multimedia (imágenes,videos)",
   "adoption.step1":"Paso 1: completar información",
-  "adoption.step2":"Paso 2: subir fotos/videos"
+  "adoption.step2":"Paso 2: subir fotos/videos",
+
+
+  "pet.list.empty":"No hay mascotas en el listado",
+  "pet.years":"{{time}} año/s",
+  "pet.months":"{{time}} mese/s"
 
 }
