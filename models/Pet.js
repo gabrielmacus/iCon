@@ -7,12 +7,13 @@ var schema = new Schema({
     name: {type:String, required:true},
     description: {type:String, required:true},
     createdBy:{type:Schema.Types.ObjectId,ref:'User',required:true},
-    images:[{ref:'Image',type:Schema.Types.ObjectId}],
+    multimedia:[{ref:'File',type:Schema.Types.ObjectId}],
     type:{type:Schema.Types.ObjectId,ref:'PetType',required:true},
     size:{type:String,enum:['small','medium','big'],required:true},
     gender:{type:String,enum:['female','male'],required:true},
     furLength:{type:String,enum:['short','medium','long']},
-    age:{type:Number,required:true}
+    age:{type:Number,required:true},
+    publish_status:{type:String,default:'draft',enum:['draft','published']}
 }, {
     timestamps: true
 });

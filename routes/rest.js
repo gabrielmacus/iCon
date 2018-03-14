@@ -14,9 +14,9 @@ var async = require('async');
 const ACCESS_LEVEL_ME = 1;
 const ACCESS_LEVEL_GROUP = 2;
 const ACCESS_LEVEL_ALL = 3;
-
 //Action
-router.all(['/:model' ,'/:model/:id([a-fA-F\\d]{24})','/:model/:id([a-fA-F\\d]{24})/:action','/:model/:action'],passport.authenticate(['jwt']),function(req, res, next){
+router.all(['/:model' ,'/:model/:id([a-fA-F\\d]{24})','/:model/:id([a-fA-F\\d]{24})/:action','/:model/:action'],
+    passport.authenticate(['jwt']),function(req, res, next){
 
 
     req.model= ModelService.LoadModel(req);
@@ -43,7 +43,6 @@ router.all(['/:model' ,'/:model/:id([a-fA-F\\d]{24})','/:model/:id([a-fA-F\\d]{2
 
     try
     {
-
 
         var Route = require('../routes/'+req.model.modelName.toLowerCase());
 

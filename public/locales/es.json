@@ -19,6 +19,8 @@
   "adoption.pet.size.big":"Grande",
   "adoption.pet.age":"Edad (aproximada)",
   "adoption.pet.description":"Descripción",
-  "adoption.pet.multimedia":"Multimedia (imágenes,videos)"
+  "adoption.pet.multimedia":"Multimedia (imágenes,videos)",
+  "adoption.step1":"Paso 1: completar información",
+  "adoption.step2":"Paso 2: subir fotos/videos"
 
 }

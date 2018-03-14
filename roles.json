@@ -11,6 +11,10 @@
   },
   "User":
   {
+    "api.pet.$.multimedia":
+    {
+      "PUT":{"access_level":1}
+    },
     "api.pet-type":
     {
       "GET":{"access_level":3}
