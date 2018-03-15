@@ -13,7 +13,7 @@ html
 
     script(src="javascripts/ng-file-upload-shim.min.js")
     script(src="javascripts/ng-file-upload.min.js")
-
+    script(src="javascripts/angular-swing.min.js")
 
     script(src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js")
 
@@ -35,7 +35,7 @@ html
             return false;
         }
 
-        var app = angular.module("app", ["ngRoute","pascalprecht.translate",'ngCookies','ngFileUpload']);
+        var app = angular.module("app", ['gajus.swing',"ngRoute","pascalprecht.translate",'ngCookies','ngFileUpload']);
         app.config(function ($routeProvider) {
             $routeProvider
                 .when("/", {
@@ -106,6 +106,10 @@ html
     script(src="javascripts/controllers/GiveAdoptionListController.js")
 
   body(data-ng-app="app" data-ng-controller="main-controller")
+
+    header
+        nav
+
 
     main
       block content

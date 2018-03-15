@@ -3,8 +3,16 @@ app.controller('give-adoption-list-controller', function ($scope,$location,$root
 
     $scope.pets = [];
 
+    $scope.actions =[
+        {
+            text:'Demo foo bar',
+            action: 'action'
+        }
+    ];
 
-    console.log($cookies.get('_id'));
+    $scope.action=function () {
+        alert("Disparo");
+    }
 
     $scope.loadAdoptions=function (p) {
 

@@ -6,7 +6,8 @@
             return {
                 restrict:"E",
                 scope: {
-                    pets:"="
+                    pets:"=",
+                    actions:"="
                 },
                 controller: function ($scope) {
 

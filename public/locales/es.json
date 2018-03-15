@@ -22,10 +22,16 @@
   "adoption.pet.multimedia":"Multimedia (imágenes,videos)",
   "adoption.step1":"Paso 1: completar información",
   "adoption.step2":"Paso 2: subir fotos/videos",
+  "adoption.give.title":"Los que das en adopción...",
 
 
   "pet.list.empty":"No hay mascotas en el listado",
-  "pet.years":"{{time}} año/s",
-  "pet.months":"{{time}} mese/s"
+  "pet.years":"{{time}} años",
+  "pet.months":"{{time}} meses",
+
+  "pet.year":"{{time}} año",
+  "pet.month":"{{time}} mes"
+
+
 
 }

@@ -1,1 +1,7 @@
-<pet-list data-ng-init="loadAdoptions()" data-ng-if="pets && pets.length" pets="pets"></pet-list>
+
+<header>
+    <h2>{{ 'adoption.give.title' | translate }}</h2>
+</header>
+
+
+<pet-list  data-ng-init="loadAdoptions()" data-ng-if="pets && pets.length" actions="actions" pets="pets"></pet-list>

@@ -7,15 +7,28 @@
             <img data-ng-if="checkMediaType(p.multimedia[0]) == 'image'" data-ng-src="/media/{{p.multimedia[0]._id}}">
             <video data-ng-if="checkMediaType(p.multimedia[0]) == 'video'" data-ng-src="/media/{{p.multimedia[0]._id}}"></video>
 
-          </figure>
 
-        <div class="data">
+         </figure>
+
+        <ul class="data">
+            <span  data-ng-if="actions && actions.length >0"  class="menu-circles" data-ng-click="p.menuOpened = !p.menuOpened"><img src="/images/menu-circles.svg"></span>
+
+            <ul   class="slide-down menu" data-ng-if="p.menuOpened" >
+                    <li class="close item" data-ng-click="p.menuOpened = false"><img src="/images/close-button.svg"></li>
+                     <li class="item" data-ng-repeat="a in actions" data-ng-click="a.action">{{a.text}}</li>
+            </ul>
+
+            <span class="name">{{p.name}}
 
 
-            <span class="name">{{p.name}}, <span class="age years" data-ng-if="p.age >= 1">{{ 'pet.years' | translate: '{time:'+p.age+'}' }}</span><span class="age months" data-ng-if="p.age < 1">{{ 'pet.months' | translate: '{time:'+p.age+'}' }}</span></span>
+                <span class="age years" data-ng-if="p.age >= 1">{{ 'pet.years' | translate: '{time:'+p.age+'}' }}</span>
+                <span class="age months" data-ng-if="p.age < 1">{{ 'pet.months' | translate: '{time:'+p.age+'}' }}</span>
 
+            </span>
+
+            <!--
             <span class="type">{{p.type.name}}</span>
-
+            -->
             <span class="size">
                 <img class="small" data-ng-class="{active:p.size == 'small'}" src="/images/paw.svg">
                 <img class="medium" data-ng-class="{active:p.size == 'medium'}"  src="/images/paw.svg">
@@ -47,39 +60,93 @@
         display: flex;
         flex-wrap: wrap;
     }
+    pet-list .pet .menu-circles
+    {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        width: 4px;
+    }
+    pet-list .pet .menu
+    {
+        font-weight: 300;
+        position: absolute;
+        font-size: 20px;
+        min-width: 200px;
+        background: #EEEEEE;
+        top: 15px;
+        right: 15px;
+        z-index: 1;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    }
+    pet-list .pet .menu .item
+    {
+        padding: 15px;
+        border-bottom: 1px solid #E0E0E0;
+    }
+    pet-list .pet .menu .item.close
+    {
+        text-align: right;
+        padding: 0;
+        padding-right: 10px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+
+    }
+    pet-list .pet .menu .item.close img
+    {
+        width: 10px;
+         height: auto;
+    }
+    pet-list .pet .menu li:last-child
+    {
+        border-bottom: 0;
+    }
     pet-list .pet-list .pet{
         box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-        height: 250px;
+
         position: relative;
         display: flex;
-        width: 33.33333333333%;
-
+        flex-wrap: wrap;
+        width: 32%;
+        margin-bottom: 2%;
+        margin-right:2%;
+    }
+    pet-list .pet-list .pet:nth-child(3n)
+    {
+        margin-right: 0;
     }
     pet-list .pet .name
     {
-        margin: auto;
+        position: absolute;
+        top: 15px;
+        left: 15px;
+    }
+    pet-list .pet .age{
+        font-weight: 300;
+
+        display: block;
     }
     pet-list .pet-list .pet .data
     {
-        padding: 10px;
         position: relative;
-        width: 45%;
+        width: 100%;
         align-items: center;
-        font-size:25px;
+        font-size: 25px;
         display: flex;
-        background: #F5F5F5;
+        height: 150px;
+        background: white;
         font-weight: 600;
+        padding: 50px;
     }
 
     pet-list .pet .type{
         position: absolute;
         top: 10px;
         left: 10px;
-        background: #3F51B5;
         font-size: 17px;
-        color: white;
+        color: #3F51B5;
         font-weight: 300;
-        padding: 6px;
     }
 
     pet-list .pet .size .medium
@@ -95,9 +162,8 @@
     pet-list .pet .size
     {
         position: absolute;
-        bottom: 10px;
-
-        right: 10px;
+        bottom: 15px;
+        right: 15px;
     }
     pet-list .pet .size img
     {width: 30px;
@@ -111,14 +177,15 @@
     }
 
     pet-list .pet .gender
-    {    width: 26px;
-        right: 10px;
-        top: 10px;
+    {      width: 26px;
+        bottom: 15px;
+        left: 15px;
         position: absolute;
     }
     pet-list figure
     {
-        width: 65%;
+        width: 100%;
+        height: 300px;
     }
     pet-list img
     {
