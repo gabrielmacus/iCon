@@ -3,7 +3,7 @@ var router = express.Router();
 var passport = require('passport');
 var mongoose = require('mongoose');
 var FileGridService = require('../services/FileGridService');
-var ffmpeg= require('fluent-ffmpeg');
+
 mongoose.connect(process.env.DB_STRING);
 
 mongoose.connection.on('connected', function () {

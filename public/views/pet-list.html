@@ -12,7 +12,7 @@
         <div class="data">
 
 
-            <span class="name">{{p.name}}, <span class="age" data-ng-if="p.age > 0">{{ 'pet.years' | translate: '{time:'+p.age+'}' }}</span><span class="age" data-ng-if="p.age < 0">{{ 'pet.months' | translate: '{time:'+p.age+'}' }}</span></span>
+            <span class="name">{{p.name}}, <span class="age years" data-ng-if="p.age >= 1">{{ 'pet.years' | translate: '{time:'+p.age+'}' }}</span><span class="age months" data-ng-if="p.age < 1">{{ 'pet.months' | translate: '{time:'+p.age+'}' }}</span></span>
 
             <span class="type">{{p.type.name}}</span>
 
@@ -61,6 +61,7 @@
     }
     pet-list .pet-list .pet .data
     {
+        padding: 10px;
         position: relative;
         width: 45%;
         align-items: center;
