@@ -1,12 +1,39 @@
 
-
+<div class="media-upload">
+    <input  type="file">
+</div>
 <ul class="media-previews">
-    <li class="preview" data-ng-repeat="p in previews">
+    <li class="preview" data-ng-repeat="m in media">
         <figure>
-            <img data-ng-if="checkType(p) == 'image'" data-ng-src="{{p.src}}">
+            <img data-ng-if="checkType(m) == 'image'" data-ng-src="{{m.preview.src || '/media/'+m._id}}">
 
-            <video data-ng-if="checkType(p) == 'video'" data-ng-src="{{p.src}}"></video>
+            <video data-ng-if="checkType(m) == 'video'" data-ng-src="{{m.preview.src || '/media/'+m._id}}"></video>
+
+            <span class="delete" data-ng-click="removeMedia(m)"><img src="/images/trash.svg"></span>
 
         </figure>
     </li>
 </ul>
+
+<style>
+    .media-previews
+    {width: 100%}
+    .media-previews img
+    {
+        width: 100%;
+    }
+    .media-previews figure
+    {
+        position: relative;
+    }
+    .media-previews .delete
+    {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+    .media-previews .delete img
+    {
+        width: 30px;
+    }
+</style>

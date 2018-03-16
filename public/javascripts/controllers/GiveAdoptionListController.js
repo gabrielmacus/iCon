@@ -4,6 +4,15 @@ app.controller('give-adoption-list-controller', function ($scope,$location,$root
     $scope.pets = [];
 
     $scope.actions =[
+
+        {
+            text:"edit",
+            action:function (pet) {
+
+                $location.path('/give-adoption/'+pet._id);
+
+            }
+        },
         {
             text:'delete',
             action: function (pet) {
@@ -22,9 +31,7 @@ app.controller('give-adoption-list-controller', function ($scope,$location,$root
         }
     ];
 
-    $scope.action=function () {
-        alert("Disparo");
-    }
+
 
     $scope.loadAdoptions=function (p) {
 

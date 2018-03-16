@@ -1,4 +1,4 @@
-app.controller('give-adoption-controller', function ($scope,$location,$rootScope) {
+app.controller('give-adoption-controller', function ($scope,$location,$rootScope,$routeParams) {
     $scope.step=1;
     $scope.pet = {};
     $scope.pets = [];
@@ -7,70 +7,109 @@ app.controller('give-adoption-controller', function ($scope,$location,$rootScope
     }
 
 
-
-    $scope.loadAdoptions=function () {
-
-        axios.get('/api/',{headers:$rootScope.headers}).then(function (response) {
-
-            console.log(response);
-            $scope.pets = response.data.docs;
-            $scope.pets.$apply();
+    s = $scope;
 
 
-        }).catch(function (err) {
-            //TODO:handle error
-            console.log(err);
-        });
+    $scope.loadAdoption=function (id) {
 
-    }
-
-    $scope.completeAdoption=function () {
-        var url = 'api/pet';
-        if($scope.pet._id)
-        {
-            url=url+"/"+$scope.pet._id;
-        }
-
-        axios.post(url, angular.copy($scope.pet),{'headers': $rootScope.headers})
+        axios.get('/api/pet/'+id,{headers:$rootScope.headers})
             .then(function (response) {
+                console.log(response.data);
                 $scope.pet = response.data;
-                $scope.goToStep(2);
+
                 $scope.$apply();
             })
             .catch(function (error) {
+
+                console.log(error);
+                //TODO: handle errors
+
+            })
+
+    }
+
+    $scope.completeAdoption=function (callback) {
+        var url = 'api/pet';
+        var method="post";
+        var pet = angular.copy($scope.pet);
+        if($scope.pet._id)
+        {
+            method = 'put';
+            url=url+"/"+$scope.pet._id;
+        }
+
+        //Deletes bas64
+        for(var k in pet.multimedia)
+        {
+            delete pet.multimedia[k].preview;
+        }
+
+        axios({method:method,url:url,data:pet,'headers': $rootScope.headers})
+            .then(function (response) {
+
+                if(!$scope.pet._id)
+                {
+
+                    $scope.pet = response.data;
+                }
+                if(!callback)
+                {
+                    $scope.goToStep(2);
+                    $scope.$apply();
+                }
+
+            })
+            .catch(function (error) {
+                //TODO: handle errors
                 console.log(error);
             });
 
 
     };
     $scope.saveMultimedia=function () {
-        var url = 'api/pet/'+$scope.pet._id+"/multimedia";
-        var formData = new FormData();
 
-        for(var k in $scope.pet.multimedia)
-        {
-            formData.append(k,$scope.pet.multimedia[k]);
+            var url = 'api/pet/'+$scope.pet._id+"/multimedia";
+            var formData = new FormData();
 
-        }
-        var headers  = angular.copy($rootScope.headers);
-        headers['Content-Type']='multipart/form-data';
-        console.log(headers);
+            for(var k in $scope.pet.multimedia)
+            {
+                if($scope.pet.multimedia[k].file)
+                {
+
+                    formData.append(k,$scope.pet.multimedia[k].file);
+                }
+
+            }
+
+
+            var headers  = angular.copy($rootScope.headers);
+            headers['Content-Type']='multipart/form-data';
 
 
 
-        axios.put(url,formData,{ headers:headers})
-            .then(function (response) {
 
-                $location.path("/give-adoption/list");
-                $scope.$apply();
-            })
-            .catch(function (err) {
-                //TODO:handle error
-                console.log(err);
-            });
+            axios.put(url,formData,{ headers:headers})
+                .then(function (response) {
+
+                    $location.path("/give-adoption/list");
+                    $scope.$apply();
+
+
+                })
+                .catch(function (err) {
+                    //TODO:handle error
+                    console.log(err);
+                });
+
+
+
     }
 
 
+    if($routeParams.id)
+    {
+        $scope.loadAdoption($routeParams.id);
+    }
 
 
 

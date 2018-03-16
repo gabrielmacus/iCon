@@ -3,15 +3,17 @@
     <div class="form-field">
 
         <label>{{ 'adoption.pet.multimedia' | translate }}</label>
+<!--
         <button class="button" type="button" data-ngf-select data-ng-model="pet.multimedia" data-ngf-multiple="true">Select</button>
+-->
 
-        <media-preview media="pet.multimedia"></media-preview>
+        <media-preview removed-media="pet.removedMultimedia" media="pet.multimedia"></media-preview>
 
     </div>
 
 
     <div class="form-button">
-        <button type="button">{{ 'adoption.step1' | translate }}</button>
+        <button onclick="goToStep(2)" type="button">{{ 'adoption.step1' | translate }}</button>
     </div>
 
     <div class="form-button">

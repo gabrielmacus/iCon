@@ -72,6 +72,11 @@ html
                     templateUrl: "views/give-adoption-list.html",
                     controller: "give-adoption-list-controller"
                 })
+                .when("/give-adoption/:id", {
+                    templateUrl: "views/give-adoption.html",
+                    controller: "give-adoption-controller"
+                })
+
 
 
         });
