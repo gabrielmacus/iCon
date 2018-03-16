@@ -5,8 +5,20 @@ app.controller('give-adoption-list-controller', function ($scope,$location,$root
 
     $scope.actions =[
         {
-            text:'Demo foo bar',
-            action: 'action'
+            text:'delete',
+            action: function (pet) {
+
+                axios.delete('/api/pet/'+pet._id,{headers:$rootScope.headers})
+                    .then(function (response) {
+
+                        console.log(response);
+                    })
+                    .catch(function (error) {
+                        //TODO: handle errors
+                        console.log(error);
+                    });
+
+            }
         }
     ];
 

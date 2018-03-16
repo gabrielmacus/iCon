@@ -15,7 +15,7 @@
 
             <ul   class="slide-down menu" data-ng-if="p.menuOpened" >
                     <li class="close item" data-ng-click="p.menuOpened = false"><img src="/images/close-button.svg"></li>
-                     <li class="item" data-ng-repeat="a in actions" data-ng-click="a.action">{{a.text}}</li>
+                    <li class="item" data-ng-repeat="a in actions" data-ng-click="execAction(a.action,p)">{{a.text | translate}}</li>
             </ul>
 
             <span class="name">{{p.name}}

@@ -9,8 +9,13 @@
                     pets:"=",
                     actions:"="
                 },
-                controller: function ($scope) {
+                controller: function ($scope,$rootScope) {
 
+                    $scope.execAction=function (action,pet) {
+
+                        action(pet);
+
+                    }
 
                     $scope.checkMediaType=function (media) {
 

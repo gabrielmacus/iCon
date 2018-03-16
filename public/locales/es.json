@@ -5,6 +5,8 @@
 
   "ready":"Listo",
 
+  "delete":"Eliminar",
+
   "adoption.give":"Dar en adopción",
   "adoption.receive":"Adoptar",
   "adoption.pet.name":"Nombre de la mascota",
